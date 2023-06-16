@@ -1,0 +1,110 @@
+<!-- <button class="btn btn-secondary fw-bold text-dark mb-2" (click)="back()">ย้อนกลับ</button> -->
+
+<div class="card mb-5 mb-xl-8">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h1 class="card-title align-items-start flex-column">
+            <span class="card-label fs-1 mb-1"><strong>{{disease_detail?.data?.name_th}}</strong></span>
+            <!-- <span class="text-muted mt-1 fw-bold fs-7">ทั้งหมด {{pagination?.total}} รายการ</span> -->
+        </h1>
+        <!-- <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+            title="Click to add a user">
+            <label class="form-check form-switch form-check-custom form-check-solid"><input formControlName="saveCard"
+                    class="form-check-input" type="checkbox" value="1" /><span
+                    class="form-check-label fw-bold text-400">ใช้สำหรับติดตาม</span></label>
+        </div> -->
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+        <div class="card-toolbar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('disease_tab')" (click)="setTab('disease_tab')">
+                        ข้อมูลโรค
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('question_tab')" (click)="setTab('question_tab')">
+                        อาการและคำถาม
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4"
+                        data-bs-toggle="tab" [ngClass]="activeClass('tracking_tab')" (click)="setTab('tracking_tab')">
+                        รูปแบบการติดตาม
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="tab-content">
+            <div class="tab-pane fade" [ngClass]="activeClass('disease_tab')" id="disease_tab">
+                <div class="mt-10">
+                    <app-disease-detail [disease_detail]="disease_detail"></app-disease-detail>
+                    <div class="pb-10 pb-lg-12">
+                        <button type="button" class="btn btn-primary" (click)="openModalEdit()">แก้ไขข้อมูล</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="activeClass('question_tab')" id="question_tab">
+                <div class="mt-10">
+                    <!-- begin::SYMPTOM DETAIL -->
+                    <h2><strong>อาการที่ติดตาม และความเสี่ยง</strong></h2>
+                    <app-symptom-detail [disease_detail]="disease_detail" [symptoms]="symptoms_tmp">
+                    </app-symptom-detail>
+                    <!-- end::SYMPTOM DETAIL -->
+                    <div class="separator separator-dashed my-5"></div>
+                    <!-- begin::ADVICE DETAIL -->
+                    <h2 class="mt-10"><strong>คำแนะนำ</strong></h2>
+                    <app-advice-detail [disease_detail]="disease_detail"></app-advice-detail>
+                    <!-- end::ADVICE DETAIL -->
+                    <div class="separator separator-dashed my-5"></div>
+                    <!-- begin::QUESTION DETAIL -->
+                    <h2 class="mt-10"><strong>คำถามอื่น ๆ</strong></h2>
+                    <app-question-detail [disease_detail]="disease_detail" [questions]="questions_tmp">
+                    </app-question-detail>
+                    <!-- end::QUESTION DETAIL -->
+                    <div class="pb-10 pb-lg-12 mt-10">
+                        <button type="button" class="btn btn-primary" (click)="openModal2Edit()">แก้ไขข้อมูล</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="activeClass('tracking_tab')" id="tracking_tab">
+                <app-template-lists [disease_detail]="disease_detail" [templates]="templates" [disease_id]="disease_id">
+                </app-template-lists>
+                <div class="pb-10 pb-lg-12">
+                    <button type="button" class="btn btn-primary"
+                        (click)="openModalAddTemplate()">เพิ่มการติดตาม</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<app-edit-modal #modal [modalConfig]="modalConfig" (emitSave)="saveForm1($event)">
+    <app-disease-detail-form [form]="form1"></app-disease-detail-form>
+    <div class="fv-row col-md-12" [formGroup]="form1">
+        <label class="form-label">สถานะ</label>
+        <div class="form-check form-check-solid form-switch">
+            <input class="form-check-input w-45px h-30px" type="checkbox" formControlName="status" id="statusSwitch"
+                (change)="onStatusChange($event)" />
+            <label class="form-check-label" htmlFor="statusSwitch" *ngIf="form1.get('status')?.value">เปิดใช้งาน</label>
+            <label class="form-check-label" htmlFor="statusSwitch" *ngIf="!form1.get('status')?.value">ปิดใช้งาน</label>
+        </div>
+    </div>
+</app-edit-modal>
+
+<app-edit-modal #modal2 [modalConfig]="modalConfig" (emitSave)="saveForm2($event)">
+    <app-disease-map-form [form]="form2">
+    </app-disease-map-form>
+</app-edit-modal>
+
+<app-edit-modal #modalAddTemplate [modalConfig]="modalConfig" (emitSave)="saveForm3($event)">
+    <app-template-form [form]="form3" [quarantine_lists]="quarantine_lists"></app-template-form>
+</app-edit-modal>

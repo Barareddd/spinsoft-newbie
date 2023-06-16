@@ -1,0 +1,21 @@
+{
+    "version": 1657529568,
+    "_key": "locationtype",
+    "_ts": 1657529568,
+    "data": [
+        {
+            "location_type": 1,
+            "location_name": "บ้าน",
+            "radius": 50,
+            "user_require": true,
+            "active": true
+        },
+        {
+            "location_type": 2,
+            "location_name": "ที่ทำงาน",
+            "radius": 500,
+            "user_require": false,
+            "active": true
+        }
+    ]
+}

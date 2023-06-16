@@ -1,0 +1,164 @@
+<div [formGroup]="form">
+    <p class="fw-bold fs-2">อาการที่ติดตาม</p>
+    <div class="row" *ngIf="symptoms.controls.length>0">
+        <div class="fv-row col-md-3">
+            <label class="form-label fw-bold">ชื่ออาการ</label>
+        </div>
+        <div class="fv-row col-md-3">
+            <label class="form-label fw-bold">กำหนดความเสี่ยงให้อาการ</label>
+        </div>
+    </div>
+    <ng-container formArrayName="symptoms">
+        <ng-container *ngFor="let symptomForm of symptoms.controls; let i = index">
+            <div class="row" [formGroupName]="i">
+                <div class="fv-row col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-select formControlName="id" placeholder="เลือกอาการ">
+                            <mat-option *ngFor="let item of symptoms_lists?.data" [value]="item.id">
+                                {{item.common_term_th}}
+                            </mat-option>
+                            <mat-option class="text_link" (click)="openModalAddSymptom()">+ เพิ่มอาการใหม่</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="fv-row col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-select formControlName="level" placeholder="เลือกความเสี่ยง">
+                            <mat-option *ngFor="let item of risk_level" [value]="item.id">
+                                {{item.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="fv-row col-md-1 center">
+                    <a class="text-primary" class="menu-title" (click)="deleteSymptoms(i)">
+                        <span class="fw-bold cursor_pointer">ลบ</span>
+                    </a>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="row mb-5">
+        <a class="text-primary" class="menu-title" (click)="addSymptoms()">
+            <span class="fw-bold cursor_pointer">+ เพิ่มอาการ</span>
+        </a>
+    </div>
+    <hr>
+    <p class="fw-bold fs-2">คำแนะนำของแต่ละความเสี่ยง</p>
+    <p class="fw-bold fs-4">ระดับรุนแรง</p>
+    <div class="row">
+        <div class="fv-row col-md-6">
+            <label class="form-label">ภาษาไทย</label>
+            <mat-form-field appearance="outline">
+                <textarea matInput formControlName="medical_advice_risk3_th" placeholder="ระบุคำแนะนำภาษาไทย"
+                    rows="4"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-6">
+            <label class="form-label">ภาษาอังกฤษ</label>
+            <mat-form-field appearance="outline">
+                <textarea matInput formControlName="medical_advice_risk3_en" placeholder="ระบุคำแนะนำภาษาอังกฤษ"
+                    rows="4"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <p class="fw-bold fs-4">ระดับปานกลาง</p>
+    <div class="row">
+        <div class="fv-row col-md-6">
+            <label class="form-label">ภาษาไทย</label>
+            <mat-form-field appearance="outline">
+                <textarea matInput formControlName="medical_advice_risk2_th" placeholder="ระบุคำแนะนำภาษาไทย"
+                    rows="4"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-6">
+            <label class="form-label">ภาษาอังกฤษ</label>
+            <mat-form-field appearance="outline">
+                <textarea matInput formControlName="medical_advice_risk2_en" placeholder="ระบุคำแนะนำภาษาอังกฤษ"
+                    rows="4"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <p class="fw-bold fs-4">ระดับต่ำ</p>
+    <div class="row">
+        <div class="fv-row col-md-6">
+            <label class="form-label">ภาษาไทย</label>
+            <mat-form-field appearance="outline">
+                <textarea matInput formControlName="medical_advice_risk1_th" placeholder="ระบุคำแนะนำภาษาไทย"
+                    rows="4"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-6">
+            <label class="form-label">ภาษาอังกฤษ</label>
+            <mat-form-field appearance="outline">
+                <textarea matInput formControlName="medical_advice_risk1_en" placeholder="ระบุคำแนะนำภาษาอังกฤษ"
+                    rows="4"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <hr>
+    <p class="fw-bold fs-2">คำถามสุขภาพเพิ่มเติม</p>
+    <div class="row" *ngIf="questions.controls.length>0">
+        <div class="fv-row col-md-4">
+            <label class="form-label fw-bold">คำถาม</label>
+        </div>
+        <div class="fv-row col-md-3">
+            <label class="form-label fw-bold">รูปแบบคำตอบ</label>
+        </div>
+        <div class="fv-row col-md-2">
+            <label class="form-label fw-bold">ต้องการคำตอบ</label>
+        </div>
+    </div>
+    <ng-container formArrayName="questions">
+        <ng-container *ngFor="let questionForm of questions.controls; let i = index">
+            <div class="row" [formGroupName]="i">
+                <div class="fv-row col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-select formControlName="id" placeholder="เลือกคำถาม"
+                            (ngModelChange)="onQuestionChange(questionForm)">
+                            <mat-option *ngFor="let item of questions_lists?.data" [value]="item.id">
+                                {{item.question_name_th}}
+                            </mat-option>
+                            <mat-option class="text_link" (click)="openModalAddQuestion()">+ เพิ่มคำถามใหม่</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="fv-row col-md-3 center">
+                    {{questionForm.get('answer_type')?.value=='number'?'ตัวเลข':questionForm.get('answer_type')?.value=='text'?'ข้อความ':'-'}}
+                    <span class="text-muted fw-bold text-muted d-block fs-7"
+                        *ngIf="questionForm.get('answer_type')?.value=='number'">ช่วง
+                        {{questionForm.get('answer_condition')?.value?.min}}
+                        - {{questionForm.get('answer_condition')?.value?.max}}</span>
+                    <span class="text-muted fw-bold text-muted d-block fs-7"
+                        *ngIf="questionForm.get('answer_type')?.value=='text'">ไม่เกิน
+                        {{questionForm.get('answer_condition')?.value?.max}}
+                        ตัวอักษร</span>
+                    <!-- <span>{{ getAnswerTypeByID(questionForm.get('answer_type')?.value) }}</span> -->
+                </div>
+                <div class="fv-row col-md-2 center">
+                    {{questionForm.get('answer_require')?.value==0?'ไม่จำเป็น':questionForm.get('answer_require')?.value==1?'จำเป็น':'-'}}
+                </div>
+                <div class="fv-row col-md-1 center">
+                    <a class="text-primary" class="menu-title" (click)="deleteQuestions(i)">
+                        <span class="fw-bold cursor_pointer">ลบ</span>
+                    </a>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="row mb-5">
+        <a class="text-primary" class="menu-title" (click)="addQuestions()">
+            <span class="fw-bold cursor_pointer">+ เพิ่มคำถาม</span>
+        </a>
+    </div>
+</div>
+
+<app-edit-modal #modalAddSymptom [modalConfig]="modalConfig" (emitSave)="saveFormAddSymptom($event)">
+    <app-symptom-form [form]="formSymptom">
+    </app-symptom-form>
+</app-edit-modal>
+
+<app-edit-modal #modalAddQuestion [modalConfig]="modalConfig" (emitSave)="saveFormAddQuestion($event)">
+    <app-question-form [form]="formQuestion">
+    </app-question-form>
+</app-edit-modal>

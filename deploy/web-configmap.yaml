@@ -1,0 +1,28 @@
+# Create ConfigMap postgres-secret for the postgres app
+# Define default database name, user, and password
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: one-stop-service-ng-env
+  namespace: one-stop-service-frontend
+  labels:
+    app: one-stop-service-ng-env
+data:
+  TZ: Asia/Bangkok
+  app-config.json: |
+    {
+      "env_mode": "develop",
+      "app_name": "DDC-Care Management",
+      "url_backend": "https://eid-api-management.ddc.moph.go.th/v1",
+      "url_register": "https://eid-register.ddc.moph.go.th",
+      "url_masterdata": "https://covid-ddc2.bigstream.cloud",
+      "url_manage_person": "https://eid-api-gateway-admin.ddc.moph.go.th/master-data/v1",
+      "url_edit_person": "https://eid-api-editregister.ddc.moph.go.th/v1",
+      "qrcode_max_day_expiration": 100,
+      "qrcode_filename_prefix": "DDC-Care-QRCode-ref-",
+      "download_app_page": "active",
+      "download_link_android": "https://testflight.apple.com/join/ygUfYxB9",
+      "download_link_ios": "https://testflight.apple.com/join/ygUfYxB9",
+      "url_longdo_api": "https://search.longdo.com",
+      "longdo_key": "covid2019"
+    }

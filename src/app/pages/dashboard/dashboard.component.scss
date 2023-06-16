@@ -1,0 +1,17 @@
+@import "../../../assets/sass/core/layout/base/_variables.scss";
+
+p {
+    margin-top: 15px;
+}
+
+.project_name {
+    color: $main-theme-color;
+    margin-top: 10%;
+}
+
+.underline {
+    background: $main-theme-color;
+    height: 10px;
+    border-radius: 100px;
+    margin: 0 40%;
+}

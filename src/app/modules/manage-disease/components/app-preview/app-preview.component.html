@@ -1,0 +1,125 @@
+<p class="fs-6">สามารถตรวจสอบความถูกต้องของคำถามสุขภาพ และทดสอบรายงานสุขภาพพร้อมดูผลลัพธ์ได้</p>
+<div class="row">
+    <div class="d-flex align-items-center" style="justify-content: center;">
+        <div class="col-md-6">
+            <div class="faker-phone">
+                <div class="faker-phone--screen">
+                    <!-- Place your content here -->
+                    <div class="header-area" *ngIf="preview_current_step<preview_final_step+2">
+                        <div class="row">
+                            <div class="col-md-1 header-back">
+                                <i class="fa-solid fa-chevron-left mt-3 back_icon" *ngIf="preview_current_step!=1"
+                                    (click)="backStep()"></i>
+                            </div>
+                            <div class="col-md-8 header-title">
+                                <div class="fw-bold">รายงานสุขภาพ</div>
+                                <span>{{getCurrentDate() | date:'dd/MM/yyyy' }}</span>
+                            </div>
+                            <div class="col-md-3 header-step">
+                                <div class="fw-bold">ขั้นที่ {{preview_current_step}}/{{preview_final_step+1}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <!-- SYMPTOMS SELECTED PAGE -->
+                        <div class="content-1" *ngIf="preview_current_step==1">
+                            <div class="title text primary text-center">
+                                <div class="fw-bold text_title">เลือกอาการ</div>
+                                <p class="text-muted text_value">เลือกได้มากกว่า 1 ข้อ</p>
+                            </div>
+                            <div class="question-area">
+                                <article *ngFor="let item of symptom_lists">
+                                    <div class="content-card">
+                                        <input type="checkbox" [id]="'symptom_'+item.id" [value]="item?.id"
+                                            (change)="onSymptomChange($event)" />
+                                        <div>
+                                            {{item?.common_term_th}}
+                                        </div>
+                                    </div>
+                                </article>
+                                <article>
+                                    <div class="content-card">
+                                        <input type="checkbox" id="clear_symptom" value="0"
+                                            (change)="onClearSymptom($event)" checked />
+                                        <div>
+                                            ไม่มีอาการเหล่านี้
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                        <!-- HEALTH QUESTION PAGE -->
+                        <!-- <div class="content-2" *ngIf="preview_current_step==2">
+                            content N
+                        </div> -->
+                        <!-- COMFIRMATION PAGE -->
+                        <div class="content-result" *ngIf="preview_current_step==preview_final_step+1">
+                            <div class="title text primary text-center">
+                                <div class="fw-bold text_title">ตรวจสอบและยืนยันข้อมูล</div>
+                            </div>
+                            <div class="risk-result">
+                                <div class="card-result">
+                                    <table class="table-responsive">
+                                        <tr>
+                                            <td class="result_title">
+                                                อาการ
+                                            </td>
+                                            <td class="result_value">
+                                                <div class="symptom-section" *ngIf="summary_symptom.length>0">
+                                                    <ul>
+                                                        <li *ngFor="let item of summary_symptom">{{item}}</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="symptom-section" *ngIf="summary_symptom.length==0">
+                                                    ไม่มีอาการ
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="question-section">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- REPORT SUCCESSFULLY PAGE -->
+                        <div class="content-result text-center" *ngIf="preview_current_step==88">
+                            <img src="assets/media/avatars/smile-sun.png" />
+                            <h3 class="fw-bold">รายงานสุขภาพเรียบร้อย</h3>
+                            <p>บันทึกการรายงานสุขภาพวันนี้แล้ว กรุณากักตัวอยู่ในพื้นที่และเข้ามารายงาน สุขภาพใน app
+                                นี้ทุก ๆ วัน</p>
+                        </div>
+                        <!-- REPORT RESULT PAGE -->
+                        <div class="content-result text-center" *ngIf="preview_current_step==99">
+                            <div class="title text primary text-center">
+                                <div class="fw-bold text_title">ผลการรายงานสุขภาพประจำวัน</div>
+                            </div>
+                            <div class="card-result">
+                                <div class="title text primary text-center">
+                                    <div class="fw-bold text_title">โรคติดเชื้อไวรัสโคโรนา 2019</div>
+                                </div>
+                                <div class="risk-level risk-danger">เสี่ยงสูง</div>
+                                <div class="advice-section">คำแนะนำเบื้องต้น</div>
+                            </div>
+                        </div>
+                        <!-- END OF PAGE -->
+                    </div>
+                    <div class="footer-area text-center">
+                        <button class="btn primary-button" (click)="nextStep()"
+                            *ngIf="preview_current_step<preview_final_step+1">ถัดไป</button>
+                        <button class="btn primary-button" (click)="fakeSendData()"
+                            *ngIf="preview_current_step==preview_final_step+1">ส่งข้อมูล</button>
+                        <button class="btn primary-button" *ngIf="preview_current_step==88"
+                            (click)="showResult()">ดูผลการรายงานสุขภาพ</button>
+                        <button class="btn secondary-button" *ngIf="preview_current_step==88"
+                            (click)="resetPreview()">กลับหน้าหลัก</button>
+                        <button class="btn primary-button" *ngIf="preview_current_step==99"
+                            (click)="resetPreview()">กลับหน้าหลัก</button>
+                        <span *ngIf="preview_current_step==1">กรุณากรอกข้อมูลตามความจริง</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

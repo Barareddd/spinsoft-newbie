@@ -1,0 +1,46 @@
+<div class="" *ngIf="!disease_lists?.data">
+    <div class="fs-1 text-center m-20">ไม่มีข้อมูล</div>
+</div>
+<!-- begin::Table container -->
+<div class="table-responsive" *ngIf="disease_lists?.data">
+    <!-- begin::Table -->
+    <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+        <!-- begin::Table head -->
+        <thead>
+            <tr class="fw-bolder text-muted">
+                <th class="min-w-150px">ชื่อโรค</th>
+                <th class="min-w-100px">สร้างโดย</th>
+                <th class="min-w-100px">วันที่สร้าง</th>
+                <th class="min-w-100px">รูปแบบการติดตาม</th>
+                <th class="min-w-140px text-end">จัดการ</th>
+            </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+            <tr *ngFor="let item of disease_lists?.data; let i = index">
+                <td class="text-dark fs-6">
+                    {{item.name_th}}
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.created_by}}
+                </td>
+                <td class="text-dark fs-6 td_date">
+                    {{getHumanDateTH(item.created_ts)}}
+                </td>
+                <td class="text-dark fs-6 td_date">
+                    {{item?.count_template}} รายการ
+                </td>
+                <td class="text-end">
+                    <a routerLink="/app/manage-disease/{{item.id}}/detail" class="text-primary"
+                        class="menu-title">รายละเอียด</a>&nbsp;&nbsp;
+                    <a routerLink="/app/manage-disease/{{item.id}}/detail" [queryParams]="{tab:'tracking_tab'}"
+                        class="text-primary">รูปแบบการติดตาม</a>
+                </td>
+            </tr>
+        </tbody>
+        <!-- end::Table body -->
+    </table>
+    <!-- end::Table -->
+</div>
+<!-- end::Table container -->

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: one-stop-service-ng
+  namespace: one-stop-service
+spec:
+  selector:
+    matchLabels:
+      app: one-stop-service-ng
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: one-stop-service-ng
+    spec:
+      # hostNetwork: true
+      containers:
+        - name: one-stop-service-ng
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 0
+          image: thspinsoft/aat-one-stop-service-ng:1.0.0
+          resources:
+            limits:
+              cpu: 2
+              memory: 4Gi
+            requests:
+              cpu: 500m
+              memory: 2Gi
+          envFrom:
+            - configMapRef:
+                name: one-stop-service-ng-env # Using the ConfigMap
+          volumeMounts:
+            - name: one-stop-service-ng-vol
+              mountPath: "/usr/src/app/src/assets/environments/app-config.json"
+              subPath: app-config.json
+              readOnly: true
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: registry-pull-secret-dockerhub
+      volumes:
+        # You set volumes at the Pod level, then mount them into containers inside that Pod
+        - name: one-stop-service-ng-vol
+          configMap:
+            # Provide the name of the ConfigMap you want to mount.
+            name: one-stop-service-ng-env
+            # An array of keys from the ConfigMap to create as files
+            items:
+              - key: "app-config.json"
+                path: "app-config.json"

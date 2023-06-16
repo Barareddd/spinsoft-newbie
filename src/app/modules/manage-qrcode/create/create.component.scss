@@ -1,0 +1,51 @@
+.ng-autocomplete {
+    width: 100%;
+    background-color: var(--kt-input-solid-bg) !important;
+    border-color: var(--kt-input-solid-bg) !important;
+    color: var(--kt-input-solid-color) !important;
+    transition: color 0.2s ease !important;
+}
+
+.hint {
+    color: gray;
+}
+
+.btn_addon {
+    padding-left: 7px !important;
+    padding-right: 3px !important;
+    height: 100% !important;
+}
+
+::ng-deep .mat-form-field {
+    display: inline !important;
+}
+
+.template_preview {
+    background-color: snow;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.hint_txt_preview {
+    margin-top: 30%;
+}
+
+.preview_title {
+    margin-bottom: 10px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    /* display: inline-grid; */
+    /* display: grid; */
+    margin: 15px 0;
+}
+
+mat-radio-button {
+    padding-bottom: 5px;
+}
+
+#map {
+    height: 25vw;
+}

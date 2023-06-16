@@ -1,0 +1,55 @@
+<!-- begin::Table container -->
+<div class="table-responsive" *ngIf="lists?.data">
+    <!-- begin::Table -->
+    <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+        <!-- begin::Table head -->
+        <thead>
+            <tr class="fw-bolder text-muted">
+                <th class="min-w-150px">สถานะ</th>
+                <th class="min-w-100px">อาการ</th>
+                <th class="min-w-100px">ชื่อทางเทคนิค</th>
+                <th class="min-w-100px">รหัส ICD-10</th>
+                <th class="min-w-100px">วันที่สร้าง</th>
+                <th class="min-w-140px text-end">จัดการ</th>
+            </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+            <tr *ngFor="let item of lists?.data; let i = index">
+                <td class="text-dark fs-6">
+                    <span class="badge badge-light-danger fs-7 fw-bolder" *ngIf="item.active!=1">ไม่ใช้งาน</span>
+                    <span class="badge badge-light-success fs-7 fw-bolder" *ngIf="item.active==1">ใช้งาน</span>
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.common_term_th}}
+                    <span class="text-muted fw-bold text-muted d-block fs-7">{{item.common_term_en}}</span>
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.technical_term?item.technical_term:'-'}}
+                </td>
+                <td class="text-dark fs-6 td_date">
+                    {{item.code_icd10}}
+                </td>
+                <td class="text-dark fs-6 td_date">
+                    {{getHumanDateTH(item?.created_ts)}}
+                </td>
+                <td class="text-end">
+                    <a class="text-primary" class="menu-title" (click)="edit(item.id)"><span
+                            class="cursor_pointer">ดู/แก้ไขข้อมูล</span></a>&nbsp;&nbsp;
+                    <!-- <a class="text-primary" class="menu-title" (click)="remove(item.id)"><span
+                            class="fw-bold cursor_pointer">ลบ</span></a> -->
+                </td>
+            </tr>
+        </tbody>
+        <!-- end::Table body -->
+    </table>
+    <!-- end::Table -->
+</div>
+<!-- end::Table container -->
+
+<div class="card-footer py-3">
+    <app-pagination [totalRecords]="pagination?.total" [recordsPerPage]="pagination?.limit"
+        (onPageChange)="displayActivePage($event)">
+    </app-pagination>
+</div>

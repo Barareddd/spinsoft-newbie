@@ -1,0 +1,55 @@
+<!-- begin::Table container -->
+<div class="table-responsive" *ngIf="sms_lists?.data">
+    <!-- begin::Table -->
+    <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+        <!-- begin::Table head -->
+        <thead>
+            <tr class="fw-bolder text-muted">
+                <!-- <th class="w-25px">#</th> -->
+                <th class="min-w-100px">รหัสประจำตัว</th>
+                <th class="min-w-140px">หมายเลขโทรศัพท์</th>
+                <th class="min-w-140px">หน่วยงาน</th>
+                <th class="min-w-120px">โรค</th>
+                <th class="min-w-140px">รูปแบบ</th>
+                <th class="min-w-140px" *ngIf="sms_lists?.data[0].status=='SENDING'">จำนวนการติดตาม</th>
+                <th class="min-w-120px">วันที่สร้าง</th>
+                <th class="min-w-100px text-end" *ngIf="sms_lists?.data[0].status=='WAITING'">จัดการ</th>
+            </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+            <tr *ngFor="let item of sms_lists?.data; let i = index">
+                <!-- <td class="text-dark fs-6">{{(i+1)+(pagination?.limit*(pagination?.page-1))}}</td> -->
+                <td class="text-dark fs-6">
+                    {{item.person_id}}
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.telephone}}
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.imported_org_name}}
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.disease_name_th}}
+                </td>
+                <td class="text-dark fs-6">
+                    {{item.template_title}}
+                </td>
+                <td class="text-dark fs-6" *ngIf="item?.status=='SENDING'">
+                    {{item.tracking_count}} ครั้ง
+                </td>
+                <td class="text-dark fs-6 td_date">
+                    {{getHumanDateTH(item.created_ts)}}
+                </td>
+                <td class="text-end" *ngIf="item?.status=='WAITING'">
+                    <a class="text-primary" class="menu-title" (click)="removeSMS(item.id)"><span
+                            class="cursor_pointer">ลบ</span></a>&nbsp;&nbsp;
+                </td>
+            </tr>
+        </tbody>
+        <!-- end::Table body -->
+    </table>
+    <!-- end::Table -->
+</div>
+<!-- end::Table container -->

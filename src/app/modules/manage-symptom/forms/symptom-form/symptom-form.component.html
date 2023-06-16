@@ -1,0 +1,59 @@
+<div [formGroup]="form">
+    <!-- <p class="fw-bold fs-2">รายละเอียดอาการ</p> -->
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label required">ชื่ออาการ (ไทย)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="common_term_th">
+                <mat-error
+                    *ngIf="form.get('common_term_th')?.hasError('required') && form.get('common_term_th')?.touched">
+                    กรุณาระบุชื่ออาการ (ไทย)</mat-error>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">ชื่ออาการ (อังกฤษ)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="common_term_en">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">ชื่อทางเทคนิค</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="technical_term">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">รหัส ICD-10</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="code_icd10">
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-12">
+            <label class="form-label">รหัส R506</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="code_r506">
+            </mat-form-field>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">สถานะการใช้งาน</label>
+            <div class="form-check form-check-solid form-switch">
+                <input class="form-check-input w-45px h-30px" type="checkbox" formControlName="active" id="statusSwitch"
+                    (change)="onStatusChange($event)" />
+                <label class="form-check-label" htmlFor="statusSwitch"
+                    *ngIf="form.get('active')?.value">เปิดใช้งาน</label>
+                <label class="form-check-label" htmlFor="statusSwitch"
+                    *ngIf="!form.get('active')?.value">ปิดใช้งาน</label>
+            </div>
+        </div>
+    </div>
+</div>

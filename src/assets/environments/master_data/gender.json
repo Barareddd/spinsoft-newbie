@@ -1,0 +1,33 @@
+{
+    "_id": "000000000000000162cbe51d",
+    "meta": {
+        "_jid": "masterdata.importer",
+        "_tid": "TR165752962965685d243",
+        "_ts": 1657529630,
+        "source": "masterdata.importer",
+        "version": 1657529629,
+        "_key": "gender"
+    },
+    "data": [
+        {
+            "gender_code": "F",
+            "gender_name_th": "หญิง",
+            "gender_name_en": "Female"
+        },
+        {
+            "gender_code": "M",
+            "gender_name_th": "ชาย",
+            "gender_name_en": "Male"
+        },
+        {
+            "gender_code": "O",
+            "gender_name_th": "อื่นๆ",
+            "gender_name_en": "Other"
+        },
+        {
+            "gender_code": "U",
+            "gender_name_th": "ไม่ระบุ",
+            "gender_name_en": "Unknown"
+        }
+    ]
+}

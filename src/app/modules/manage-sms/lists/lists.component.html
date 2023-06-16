@@ -1,0 +1,98 @@
+<div class="card mb-5 mb-xl-8">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fs-3 mb-1">รายการ SMS ที่สร้างไว้</span>
+            <!-- <span class="text-muted mt-1 fw-bold fs-7">ทั้งหมด {{pagination?.total}} รายการ</span> -->
+        </h3>
+        <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+            title="Click to add a user">
+            <button type="button" class="btn btn-sm btn-primary" (click)="createSMS()">
+                <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3"></span>
+                สร้าง SMS
+            </button>
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+        <div class="card-toolbar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('waiting_tab')" (click)="setTab('waiting_tab')">
+                        รอส่ง ({{paginationWaiting?.total || '0'}})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('sending_tab')" (click)="setTab('sending_tab')">
+                        กำลังส่ง ({{paginationSending?.total || '0'}})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4"
+                        data-bs-toggle="tab" [ngClass]="activeClass('registered_tab')"
+                        (click)="setTab('registered_tab')">
+                        ลงทะเบียนสำเร็จ ({{paginationRegistered?.total || '0'}})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4"
+                        data-bs-toggle="tab" [ngClass]="activeClass('unregistered_tab')"
+                        (click)="setTab('unregistered_tab')">
+                        ไม่สามารถติดตามได้ ({{paginationUnregistered?.total || '0'}})
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="tab-content">
+            <div class="tab-pane fade" [ngClass]="activeClass('waiting_tab')" id="waiting_tab">
+                <div class="" *ngIf="!sms_waiting_lists?.data">
+                    <div class="fs-1 text-center m-20">ไม่มีข้อมูล</div>
+                </div>
+                <app-sms-table [sms_lists]="sms_waiting_lists" (removeByID)="removeSMS($event)"></app-sms-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationWaiting.total" [recordsPerPage]="paginationWaiting.limit"
+                        (onPageChange)="displayActivePageWaiting($event)">
+                    </app-pagination>
+                </div>
+            </div>
+            <div class="tab-pane fade" [ngClass]="activeClass('sending_tab')" id="sending_tab">
+                <div class="" *ngIf="!sms_sending_lists?.data">
+                    <div class="fs-1 text-center m-20">ไม่มีข้อมูล</div>
+                </div>
+                <app-sms-table [sms_lists]="sms_sending_lists" (removeByID)="removeSMS($event)"></app-sms-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationSending.total" [recordsPerPage]="paginationSending.limit"
+                        (onPageChange)="displayActivePageWaiting($event)">
+                    </app-pagination>
+                </div>
+            </div>
+            <div class="tab-pane fade" [ngClass]="activeClass('registered_tab')" id="registered_tab">
+                <div class="" *ngIf="!sms_registered_lists?.data">
+                    <div class="fs-1 text-center m-20">ไม่มีข้อมูล</div>
+                </div>
+                <app-sms-table [sms_lists]="sms_registered_lists" (removeByID)="removeSMS($event)"></app-sms-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationRegistered.total"
+                        [recordsPerPage]="paginationRegistered.limit" (onPageChange)="displayActivePageWaiting($event)">
+                    </app-pagination>
+                </div>
+            </div>
+            <div class="tab-pane fade" [ngClass]="activeClass('unregistered_tab')" id="unregistered_tab">
+                <div class="" *ngIf="!sms_unregistered_lists?.data">
+                    <div class="fs-1 text-center m-20">ไม่มีข้อมูล</div>
+                </div>
+                <app-sms-table [sms_lists]="sms_unregistered_lists" (removeByID)="removeSMS($event)"></app-sms-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationUnregistered.total"
+                        [recordsPerPage]="paginationUnregistered.limit"
+                        (onPageChange)="displayActivePageWaiting($event)">
+                    </app-pagination>
+                </div>
+            </div>
+        </div>
+        <!-- begin::Body -->
+    </div>

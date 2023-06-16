@@ -1,0 +1,88 @@
+<div [formGroup]="form">
+    <p class="fw-bold fs-2">รูปแบบการติดตาม</p>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label required">ชื่อการติดตาม</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="title" placeholder="ตัวอย่าง COVID-19 - กักตัว 14 วัน">
+                <mat-error *ngIf="form.get('title')?.hasError('required') && form.get('title')?.touched">
+                    กรุณาระบุชื่อการติดตาม</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ml-card-body mb-5">
+            <ng-container formArrayName="monitoring_option">
+                <ng-container *ngFor="let monitoringOptionForm of monitoring_option.controls; let i = index">
+                    <div class="row" [formGroupName]="i">
+                        <div class="row">
+                            <span class="fw-bold fs-3">ระยะที่ {{i+1}}</span>
+                            <span class="text-end">
+                                <a class="text-primary" class="menu-title">
+                                    <span class="fw-bold cursor_pointer" (click)="deleteMonitoringOption(i)"
+                                        *ngIf="i!=0">ลบ</span>
+                                </a>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <label
+                                class="col-6 fs-5 fw-bold text-muted text-end text_title label-input">ระยะเวลาที่ติดตาม</label>
+                            <div class="col-3 form-input form-input-sm">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="days">
+                                    <span matSuffix class="input_suffix">วัน</span>
+                                    <mat-error
+                                        *ngIf="monitoringOptionForm.get('days')?.hasError('required') && monitoringOptionForm.get('days')?.touched">
+                                        กรุณาระบุระยะเวลาที่ติดตาม</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label
+                                class="col-6 fs-5 fw-bold text-muted text-end text_title">ติดตามเส้นทางการเดินทาง</label>
+                            <div class="col-6 form-check form-switch form-switch-md form-check-custom form-check-solid">
+                                <input class="form-check-input" type="checkbox" formControlName="tracking_status"
+                                    (change)="onTrackingStatusChange(monitoringOptionForm, $event)" />
+                                <label
+                                    class="form-check-label">{{monitoringOptionForm.get('tracking_status')?.value?'เปิด':'ปิด'}}</label>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-6 fs-5 fw-bold text-muted text-end text_title">ติดตามการกักตัว</label>
+                            <div class="col-6 form-check form-switch form-switch-md form-check-custom form-check-solid">
+                                <input class="form-check-input" type="checkbox" formControlName="quarantine_status"
+                                    (change)="onQuarantineStatusChange(monitoringOptionForm, $event)" />
+                                <label
+                                    class="form-check-label">{{monitoringOptionForm.get('quarantine_status')?.value?'เปิด':'ปิด'}}</label>
+                            </div>
+                        </div>
+                        <div class="row mt-2 enter_coordinate"
+                            *ngIf="monitoringOptionForm.get('quarantine_status')?.value">
+                            <label class="col-6 fs-5 fw-bold text-muted text-end text_title">ระบุพิกัด</label>
+                            <div class="col-6 form-check form-switch form-switch-md form-check-custom form-check-solid">
+                                <div *ngFor="let item of quarantine_lists">
+                                    <div class="checkbox">
+                                        <input class="form-check-input" [id]="'quarantine_'+item.location_type"
+                                            type="checkbox" [value]="item.location_type"
+                                            (change)="onQuarantinePointsChange(monitoringOptionForm, $event)"
+                                            [checked]="monitoringOptionForm.get('quarantine_points')?.value.indexOf(item.location_type) > -1 || checkInsertCase(monitoringOptionForm.get('quarantine_points')?.value, item.location_type)"
+                                            [disabled]="item.user_require" />
+                                        <label class="form-check-label" [for]="'quarantine_'+item.location_type">
+                                            {{ item.location_name }}
+                                        </label>&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container>
+            </ng-container>
+            <div class="row mb-5">
+                <a class="text-primary" class="menu-title" (click)="addMonitoringOption()">
+                    <span class="fw-bold cursor_pointer">+ เพิ่มช่วงการติดตาม</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

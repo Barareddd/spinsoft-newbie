@@ -1,0 +1,60 @@
+<div class="ml-card-body mb-5">
+    <ng-container *ngIf="disease_detail?.data">
+        <div class="row">
+            <label class="col-2 fs-6 fw-bold text-muted text_title">ชื่อโรค (ไทย)</label>
+            <div class="col-6 ml-4">
+                <span class="fw-bolder fs-5 text-dark">{{ disease_detail?.data?.name_th }}</span>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div class="ml-card-body mb-5">
+    <ng-container *ngIf="disease_detail?.data">
+        <div class="row">
+            <label class="col-2 fs-6 fw-bold text-muted text_title">ชื่อโรค (อังกฤษ)</label>
+            <div class="col-6 ml-4">
+                <span class="fw-bolder fs-5 text-dark">{{ disease_detail?.data?.name_en?
+                    disease_detail?.data?.name_en: '-' }}</span>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div class="ml-card-body mb-5">
+    <ng-container *ngIf="disease_detail?.data">
+        <div class="row">
+            <label class="col-2 fs-6 fw-bold text-muted text_title">รหัสโรค ICD-10</label>
+            <div class="col-6 ml-4">
+                <span class="fw-bolder fs-5 text-dark">{{ disease_detail?.data?.code_icd10?
+                    disease_detail?.data?.code_icd10: '-' }}</span>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div class="ml-card-body mb-5">
+    <ng-container *ngIf="disease_detail?.data">
+        <div class="row">
+            <label class="col-2 fs-6 fw-bold text-muted text_title">รหัสโรค R506</label>
+            <div class="col-6 ml-4">
+                <span class="fw-bolder fs-5 text-dark">{{ disease_detail?.data?.code_r506?
+                    disease_detail?.data?.code_r506: '-' }}</span>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div class="ml-card-body mb-5">
+    <ng-container *ngIf="disease_detail?.data">
+        <div class="row">
+            <label class="col-2 fs-6 fw-bold text-muted text_title">สถานะ</label>
+            <div class="col-6 ml-4">
+                <div class="card-toolbar">
+                    <span class="badge badge-light-danger fs-7 fw-bolder"
+                        *ngIf="disease_detail?.data?.status==0">ปิดใช้งานอยู่</span>
+                    <span class="badge badge-light-success fs-7 fw-bolder"
+                        *ngIf="disease_detail?.data?.status==1">เปิดใช้งานอยู่</span>
+                    <span class="badge badge-light-primary fs-7 fw-bolder"
+                        *ngIf="disease_detail?.data?.status==2">ฉบับร่าง</span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

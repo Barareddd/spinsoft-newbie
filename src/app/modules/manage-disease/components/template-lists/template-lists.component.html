@@ -1,0 +1,34 @@
+<div class="table-responsive">
+    <div class="mt-10">
+        <h3><strong>การติดตาม {{disease_detail?.data?.name_th}} ({{templates?.data?.length || 0}}
+                รายการ)</strong></h3>
+        <div class="table-responsive">
+            <!-- begin::Table -->
+            <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3" *ngIf="templates">
+                <!-- begin::Table body -->
+                <tbody>
+                    <tr *ngFor="let item of templates?.data; let i = index">
+                        <td>
+                            {{item?.title}}
+                            <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Code: PH</span> -->
+                        </td>
+                        <td>
+                            <a class="text-primary menu-title" (click)="openModalShowTemplate(item.id)">
+                                <span class="cursor_pointer">ดู/แก้ไขข้อมูล</span>
+                            </a>&nbsp;&nbsp;
+                            <a class="text-primary"><span class="cursor_pointer"
+                                    (click)="removeTemplate(item?.id)">ลบ</span></a>
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- end::Table body -->
+            </table>
+            <!-- end::Table -->
+            <p *ngIf="!templates" class="text-center fs-4">ยังไม่มีข้อมูล</p>
+        </div>
+    </div>
+</div>
+
+<app-edit-modal #modalEditTemplate [modalConfig]="modalConfig" (emitSave)="saveFormEdit($event)">
+    <app-template-form [form]="form" [quarantine_lists]="quarantine_lists"></app-template-form>
+</app-edit-modal>

@@ -1,0 +1,19 @@
+<ng-template #modal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">เลือกตำแหน่ง</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <!-- <input type="text" id="search" />
+    <button (click)="seachMap()">search</button> -->
+    <button type="button" class="btn btn-xs btn-light" (click)="getCurrentLocation()"><span
+        [inlineSVG]="'./assets/media/icons/duotune/maps/map007.svg'" class="svg-icon svg-icon-3"></span>
+      ตำแหน่งปัจจุบัน</button>
+    <div id="map"></div>
+    พิกัด: {{currentLocation?.lat}}{{currentLocation?',':'-'}}{{currentLocation?.lon}}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-primary" (click)="saveLocation()">บันทึก</button>
+    <button type="button" class="btn btn-sm btn-outline-dark" (click)="close()">ปิด</button>
+  </div>
+</ng-template>

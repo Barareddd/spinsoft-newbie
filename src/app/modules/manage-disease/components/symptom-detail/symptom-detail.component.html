@@ -1,0 +1,31 @@
+<div class="table-responsive">
+    <!-- begin::Table -->
+    <table class="table table-row-bordered table-row-gray-100 align-middle"
+        *ngIf="disease_detail?.data?.symptoms.length>0">
+        <!-- begin::Table head -->
+        <thead>
+            <tr class="fw-bolder text-muted">
+                <th class="max-w-50px">ความเสี่ยง</th>
+                <th class="min-w-140px">อาการ</th>
+            </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+            <tr *ngFor="let item of symptoms; let i = index">
+                <td>{{item?.level=='1'? 'ต่ำ': item?.level=='2'? 'ปานกลาง':'สูง'}}
+                </td>
+                <td *ngIf="item?.id?.length>0">
+                    {{getSymptomsTitleByArrID(item?.id)}}
+                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Code: PH</span> -->
+                </td>
+                <td *ngIf="item?.id?.length==0">
+                    -
+                </td>
+            </tr>
+        </tbody>
+        <!-- end::Table body -->
+    </table>
+    <!-- end::Table -->
+</div>
+<p *ngIf="disease_detail?.data?.symptoms.length==0" class="text-center fs-4">ยังไม่มีข้อมูล</p>

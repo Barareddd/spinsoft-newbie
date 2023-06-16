@@ -1,0 +1,87 @@
+<div class="card mb-5 mb-xl-8">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fs-3 mb-1">รายการคำถามสุขภาพ</span>
+            <!-- <span class="text-muted mt-1 fw-bold fs-7">ทั้งหมด {{pagination?.total}} รายการ</span> -->
+        </h3>
+        <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+            title="Click to add a symptom" *ngIf="activeTab=='kt_table_widget_5_tab_1'">
+            <button type="button" class="btn btn-sm btn-primary" (click)="openModalAddSymptom()">
+                <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3"></span>
+                สร้างอาการ
+            </button>
+        </div>
+        <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+            title="Click to add a question" *ngIf="activeTab=='kt_table_widget_5_tab_2'">
+            <button type="button" class="btn btn-sm btn-primary" (click)="openModalAddQuestion()">
+                <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3"></span>
+                สร้างคำถาม
+            </button>
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+        <div class="card-toolbar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('kt_table_widget_5_tab_1')"
+                        (click)="setTab('kt_table_widget_5_tab_1')">
+                        คำถามเกี่ยวกับอาการ ({{paginationSymptom?.total || '0'}})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('kt_table_widget_5_tab_2')"
+                        (click)="setTab('kt_table_widget_5_tab_2')">
+                        คำถามสุขภาพเพิ่มเติม ({{paginationQuestion?.total || '0'}})
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="tab-content">
+            <div class="tab-pane fade" [ngClass]="activeClass('kt_table_widget_5_tab_1')" id="kt_table_widget_5_tab_1">
+                <app-symptom-lists [lists]="symptom_lists" (editByID)="openModalEditSymptom($event)"
+                    (removeByID)="removeSymptom($event)" [pagination]="paginationSymptom"
+                    (activePage)="displayActivePageSymptom($event)">
+                </app-symptom-lists>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="activeClass('kt_table_widget_5_tab_2')" id="kt_table_widget_5_tab_2">
+                <app-question-lists [lists]="question_lists" (editByID)="openModalEditQuestion($event)"
+                    (removeByID)="removeQuestion($event)" [pagination]="paginationQuestion"
+                    (activePage)="displayActivePageQuestion($event)"></app-question-lists>
+            </div>
+        </div>
+    </div>
+    <!-- begin::Body -->
+    <!-- <div class="card-footer py-3">
+        <app-pagination [totalRecords]="pagination.total" [recordsPerPage]="pagination.limit"
+            (onPageChange)="displayActivePage($event)">
+        </app-pagination>
+    </div> -->
+
+</div>
+
+<app-edit-modal #modalAddSymptom [modalConfig]="modalConfig" (emitSave)="saveFormAddSymptom($event)">
+    <app-symptom-form [form]="formSymptom">
+    </app-symptom-form>
+</app-edit-modal>
+
+<app-edit-modal #modalEditSymptom [modalConfig]="modalConfig" (emitSave)="saveFormEditSymptom($event)">
+    <app-symptom-form [form]="formSymptom">
+    </app-symptom-form>
+</app-edit-modal>
+
+<app-edit-modal #modalAddQuestion [modalConfig]="modalConfig" (emitSave)="saveFormAddQuestion($event)">
+    <app-question-form [form]="formQuestion">
+    </app-question-form>
+</app-edit-modal>
+
+<app-edit-modal #modalEditQuestion [modalConfig]="modalConfig" (emitSave)="saveFormEditQuestion($event)">
+    <app-question-form [form]="formQuestion">
+    </app-question-form>
+</app-edit-modal>

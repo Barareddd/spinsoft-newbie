@@ -1,0 +1,27 @@
+{
+    "version": 1657529568,
+    "_key": "contactstatus",
+    "_ts": 1657529568,
+    "data": [
+        {
+            "contact_status": 1,
+            "contact_name": "ไม่มีความเสี่ยง",
+            "active": true
+        },
+        {
+            "contact_status": 2,
+            "contact_name": "ผู้สัมผัสเสี่ยงต่ำ",
+            "active": true
+        },
+        {
+            "contact_status": 3,
+            "contact_name": "ผู้สัมผัสเสี่ยงสูง",
+            "active": true
+        },
+        {
+            "contact_status": 4,
+            "contact_name": "ผู้ติดเชื้อ",
+            "active": true
+        }
+    ]
+}

@@ -1,0 +1,547 @@
+<!-- <button class="btn btn-secondary fw-bold text-dark mb-2" (click)="back()">ย้อนกลับ</button> -->
+
+<div class="card  mb-xl-10">
+  <div class="card-header card-header-dif-bottom border-0 mt-5 ">
+    <h2 class="align-items-start flex-column">
+      <span class="fw-bolder text-dark">กลุ่มเสี่ยงที่ติดตาม</span>
+    </h2>
+  </div>
+
+  <div class="card-body">
+
+    <div class="row col-md-8 mb-4">
+      <div class="position-relative">
+        <ng-autocomplete [data]="historySearch" [searchKeyword]="'displayName'" [initialValue]="searchSelect"
+          (selected)="selectEventHospitalSearch($event)" (keyup.enter)="onFocus($event)"
+          (inputChanged)='onChangeSearch($event)' [itemTemplate]="itemTemplate" (inputFocused)='onFocus($event)'
+          (inputCleared)="clearSearch()" [(ngModel)]="searchDisplay" placeholder="ค้นหาด้วยเลขบัตรประชาชน / เลขหนังสือเดินทาง">
+        </ng-autocomplete>
+
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.displayName"></a>
+        </ng-template>
+
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="mt-4 nav nav-stretch nav-line-tabs nav-line-tabs-2x mb-4"></div>
+
+    <div>
+      <h2 class="align-items-start flex-column">
+        <span class="fw-bolder text-dark">{{ personData.firstname }} {{ personData.lastname }}</span>
+      </h2>
+    </div>
+    <!-- <ul class="
+    nav nav-stretch nav-line-tabs
+    fw-bold
+    flex-nowrap
+    mb-4
+    " role="tablist">
+      <li class="nav-item">
+        <a class="nav-link cursor-pointer" [ngClass]="{ active: activeTab === 'Monitoring' }"
+          (click)="setActiveTab('Monitoring')" role="tab">
+          การติดตาม
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link cursor-pointer" [ngClass]="{ active: activeTab === 'Quarantine'}"
+          (click)="setActiveTab('Quarantine'); plotMarkMapMultiCard();" role="tab">
+          ตำแหน่งการกักตัว
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link cursor-pointer" [ngClass]="{ active: activeTab === 'Personal' }"
+          (click)="setActiveTab('Personal')" role="tab">
+          ข้อมูลส่วนตัว
+        </a>
+      </li>
+    </ul> -->
+    <div class="card-toolbar">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="
+              nav-link
+              btn btn-sm btn-color-muted btn-active btn-active-light-primary
+              fw-bolder
+              px-4
+              me-1
+            " data-bs-toggle="tab" [ngClass]="activeClass('Monitoring')"
+            (click)="setActiveTab('Monitoring')">
+            การติดตาม
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="
+              nav-link
+              btn btn-sm btn-color-muted btn-active btn-active-light-primary
+              fw-bolder
+              px-4
+              me-1
+            " data-bs-toggle="tab" [ngClass]="activeClass('Quarantine')"
+            (click)="setActiveTab('Quarantine'); plotMarkMapMultiCard();">
+            ตำแหน่งการกักตัว
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="
+              nav-link
+              btn btn-sm btn-color-muted btn-active btn-active-light-primary
+              fw-bolder
+              px-4
+            " data-bs-toggle="tab" [ngClass]="activeClass('Personal')"
+            (click)="setActiveTab('Personal')">
+            ข้อมูลส่วนตัว
+          </a>
+        </li>
+      </ul>
+      <hr class="m-1 p-1 mt-4 nav-line-tabs-2x">
+    </div>
+    <div class="tab-content pt-3">
+      <div class="tab-pane" [ngClass]="{ active: activeTab === 'Monitoring' }">
+        <div class="d-flex flex-column flex-center" *ngIf="monitoringData.length == 0">
+          <img src="../../../../assets/media/icons/duotune/maps/map001.svg" class="mw-400px" />
+          <div class="fs-2 fw-bolder text-dark">ไม่พบข้อมูลการติดตาม</div>
+        </div>
+        <div *ngFor="let monitor of monitoringData; let disease = index" class="bg-light-gray rounded  mb-9 p-2">
+          <div class="ml-2 mt-4">
+            <div class="row col-12">
+              <div class="col-xl-8">
+                <h3 class="">
+                  <span class="fw-bolder text-dark ">{{ monitor.disease_name }}</span>
+                </h3>
+              </div>
+              <div class="col-xl-4 text-end" *ngIf="!editor[monitor.disease_id]">
+                <button class="btn btn-sm btn-warning mr-2" (click)="enableEdit(monitor.disease_id, true)">แก้ไข</button>
+                <button class="btn btn-sm btn-danger" (click)="confirmInfected(monitor)">ยืนยันติดเชื้อ</button>
+              </div>
+              <div class="col-xl-4 text-end" *ngIf="editor[monitor.disease_id]">
+                <button class="btn btn-sm btn-primary mr-2" (click)="updateMonitoring(monitor.disease_id)">บันทึก</button>
+                <button class="btn btn-sm btn-secondary" (click)="enableEdit(monitor.disease_id, false)">ยกเลิก</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body mb-4">
+            <div class="row mb-4">
+              <label class="ml-2 col-2 fw-bold text-muted">ประเภทกลุ่มเสี่ยง</label>
+              <div class="col-5">
+                <span class="fw-bolder text-dark-gray">{{ monitor.person_type_name}}</span>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <label class="ml-2 col-2 mt-4 fw-bold text-muted">ประเภทผู้สัมผัส</label>
+              <div class="col-5 mt-4" *ngIf="!editor[monitor.disease_id]">
+                <span class="fw-bold text-dark-gray">{{ monitor.contact_name }}</span>
+              </div>
+              <div class="col-5" *ngIf="editor[monitor.disease_id]">
+                <mat-form-field appearance="outline">
+                  <mat-select [(ngModel)]="monitor.contact_status_type">
+                    <mat-option class="fw-bold text-dark-gray" *ngFor="let status of contactStatus | async"
+                      [value]="status.contact_status">
+                      {{ status['contact_name'] }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <ng-container *ngFor="let phase of monitor.monitor_phase; let ph = index">
+              <div class="ml-2 mt-2" *ngIf="!editor[monitor.disease_id]">
+                <hr class="m-2 p-2 nav-line-tabs-2x">
+                <p class="fs-6 fw-bolder text-dark text_title">ระยะที่ {{ phase.phase }}:</p>
+                <ul>
+                  <li class="mb-2">
+                    <p class="fw-bolder text-dark-gray">{{ phase.duration_phase }} วัน ({{ phase.started_ts * 1000 |
+                      thaidate: 'shortDate' }} - {{
+                      phase.ended_ts * 1000 | thaidate: 'shortDate' }})</p>
+                  </li>
+                  <li class="mb-2">
+                    <p class="fw-bolder text-dark-gray">{{ phase?.quarantine_status ? 'ติดตามการกักตัว':
+                      'ไม่ติดตามการกักตัว' }}</p>
+                  </li>
+                  <li class="mb-2">
+                    <p class="fw-bolder text-dark-gray">{{ phase.tracking_status ? 'ติดตามการเดินทาง':
+                      'ไม่ติดตามการเดินทาง' }}</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="ml-2 mt-2" *ngIf="editor[monitor.disease_id]">
+                <hr class="nav-line-tabs-2x">
+                <p class="fs-6 fw-bolder text-dark text_title">ระยะที่ {{ phase.phase }}:</p>
+                <div class="row col-md-12">
+                  <label class="col-md-2 fw-bold text-muted mt-4">ช่วงเวลาติดตาม</label>
+                  <ng-container *ngIf="!editor[monitor.disease_id] || (editor[monitor.disease_id] &&  ph == 0)">
+                    <div class="col-md-3 mt-4 fw-bolder text-dark-gray  text_title">
+                      {{
+                      phase.started_ts * 1000 | thaidate:
+                      'shortDate' }}
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="editor[monitor.disease_id] &&  ph != 0">
+                    <mat-form-field class="col-md-3 fw-bolder text-dark-gray text_title" appearance="outline"
+                      *ngIf="editor[monitor.disease_id]">
+                      <input matInput #ref [matDatepicker]="pickerStart" (click)=" pickerStart.open()" readonly
+                        [min]="calMin(monitor['monitor_phase'][ph - 1]['ended_ts'])"
+                        [max]="calMax(monitor['monitor_phase'][ph]['ended_ts'])"
+                        (dateChange)="calDatePhase(disease, ph, 'start')" [(ngModel)]="phase.started_date">
+                      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerStart></mat-datepicker>
+                    </mat-form-field>
+                  </ng-container>
+                  <div class="col-md-1 mt-4 text-center">ถึง</div>
+                  <mat-form-field class="col-md-3 fw-bolder text-dark-gray text_title" appearance="outline"
+                    *ngIf="editor[monitor.disease_id]">
+                    <input matInput [matDatepicker]="pickerEnd" (click)=" pickerEnd.open()" readonly
+                      [(ngModel)]="phase.ended_date" [min]="calMin(phase.started_ts)"
+                      (dateChange)="calDatePhase(disease, ph, 'end')">
+                    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerEnd></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="row mt-2">
+                  <label class="col-2 fw-bold text-muted">จำนวนวัน</label>
+                  <div class="col-2 fw-bolder text-dark-gray">{{ phase.duration_phase }} วัน</div>
+                </div>
+                <div class="row">
+                  <label class="col-2 fw-bold text-muted mt-4">วิธีติดตาม</label>
+                  <div class="col-8">
+                    <div class="d-flex align-items-center mt-3">
+                      <ul class="remove-bullet">
+                        <li class="mb-2">
+                          <label class="form-check form-check-inline form-check-solid me-5">
+                            <input class="form-check-input" name="communication[]" type="checkbox"
+                              [checked]="phase?.quarantine_status" [(ngModel)]="phase.quarantine_status" />
+                            <p class="fw-bold ps-2 fs-6 text-dark-gray">ติดตามการกักตัว</p></label>
+                        </li>
+                        <li>
+                          <label class="form-check form-check-inline form-check-solid">
+                            <input class="form-check-input" name="communication[]" type="checkbox"
+                              [checked]="phase?.tracking_status" [(ngModel)]="phase.tracking_status" />
+                            <p class="fw-bold ps-2 fs-6 text-dark-gray">ติดตามการเดินทาง</p></label>
+                        </li>
+                      </ul>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" [ngClass]="{ active: activeTab === 'Quarantine' }">
+        <ng-container *ngIf="quarantineData && quarantineData['locations'] && mapShowMultiCard">
+          <ng-container *ngFor="let location of quarantineData['locations']; let i = index">
+            <div class="card-header align-items-center border-0 mt-4">
+              <h3 class="card-title align-items-start flex-column">
+                <span class="fw-bolder text-dark">ตำแน่งกักตัวที่ {{ i + 1 }} {{ location.location_name ? ': ' +
+                  location.location_name: '' }}</span>
+                <span class="fs-6 text-dark-gray">อัปเดตล่าสุด: {{ location.updated_ts * 1000 | thaidate:'shortDate' }}
+                  {{
+                  location.updated_ts * 1000 | date: 'HH:mm' }}</span>
+              </h3>
+              <div class="col-md-4 ml-auto text-end">
+                <button *ngIf="location.location_type == 1" class="btn btn-sm btn-primary mr-2"
+                  (click)="sendNotificationUpdateLocation()">อนุญาติให้แก้ไขตำแหน่ง</button>
+                <button *ngIf="location.location_type != 1 && !isEditLocation" class="btn btn-sm btn-primary mr-2"
+                  (click)="editLocation()">แก้ไขตำแหน่งกักตัว</button>
+              </div>
+            </div>
+            <div class="card-body mb-4">
+              <div class="col-md-8 mb-4" *ngIf="location.location_type != 1 && isEditLocation">
+                <ng-autocomplete *ngIf="isEditLocation" [data]="locationSearchOption" [searchKeyword]="'name'"
+                  [initialValue]="locationSelect" (selected)="selectEventLocationlSearch($event)"
+                  placeholder="ค้นหาตำแหน่ง" (inputChanged)='onChangeLocationSearch($event)'
+                  [itemTemplate]="itemTemplateLocation" (inputCleared)="clearLocationSearch()"
+                  [(ngModel)]="searchLocationDisplay">
+                </ng-autocomplete>
+
+                <ng-template #itemTemplateLocation let-item>
+                  <a [innerHTML]="item.name"></a>
+                </ng-template>
+
+                <ng-template #notFoundTemplate let-notFound>
+                  <div [innerHTML]="notFound"></div>
+                </ng-template>
+              </div>
+              <div *ngIf="(quarantineSub | async)" id="map{{ i }}"></div>
+              <ng-container *ngIf="location.location_type != 1 && isEditLocation">
+                <h3 class="card-title align-items-start flex-column mt-4">
+                  <span class="fs-6"> {{ locationSelectFromSearch ? locationSelectFromSearch['address']: '' }}</span>
+                </h3>
+                <div class="col-md-4 mt-4">
+                  <button class="btn btn-primary mr-2" (click)="updateLocation()">บันทึก</button>
+                  <button class="btn btn-secondary" (click)="cancelEditLocation()">ยกเลิก</button>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="!quarantineData">
+          <div class="card mb-5">
+            <div class="card-header align-items-center border-0 mt-4">
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-column flex-center">
+                <img src="../../../../assets/media/icons/duotune/maps/map002.svg" class="mw-400px" />
+                <div class="fs-2 fw-bolder text-dark">ไม่พบข้อมูลตำแหน่ง</div>
+              </div>`
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+
+      <div class="tab-pane" [ngClass]="{ active: activeTab === 'Personal' }">
+        <div class="row mb-10">
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fs-6 fw-bold text-muted text_title">เลขประจำตัวฯ</label>
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.person_id }}</span>
+            </div>
+          </div>
+
+
+          <ng-container *ngIf="personData.org_id">
+            <div class="row mb-4 ml-2">
+              <label class="col-4 fs-6 fw-bold text-muted text_title">สังกัดหน่วยงานภายใต้</label>
+              <div class="col-6 ml-4">
+                <span class="fw-bolder fs-6 text-dark-gray">{{ personData.organization }}</span>
+              </div>
+            </div>
+          </ng-container>
+
+
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fw-bold fs-6 text-muted">สัญชาติ</label>
+
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.nationality }}</span>
+            </div>
+          </div>
+
+
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fw-bold fs-6 text-muted">ภาษาสื่อสาร</label>
+
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.language }}</span>
+            </div>
+          </div>
+
+
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fw-bold fs-6 text-muted">เพศ</label>
+
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.gender }}</span>
+            </div>
+          </div>
+
+
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fw-bold fs-6 text-muted">วันเกิด</label>
+
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.birthdate | thaidate: 'short' }} ({{
+                personData.age }} ปี)</span>
+            </div>
+          </div>
+
+
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fw-bold fs-6 text-muted">หมายเลขติดต่อ</label>
+
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.telephone }}</span>
+            </div>
+          </div>
+
+
+
+          <div class="row mb-4 ml-2">
+            <label class="col-4 fw-bold fs-6 text-muted">อีเมล</label>
+            <div class="col-6 ml-4">
+              <span class="fw-bolder fs-6 text-dark-gray">{{ personData.email }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="card" *ngIf="(monitoringSub | async) && (personType | async) && (contactStatus | async)">
+  <div class="card-header card-header-dif-bottom  border-0 mt-5">
+    <h2 class="align-items-start flex-column">
+      <span class="fw-bolder text-dark">ข้อมูลการติดตาม</span>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="d-flex flex-column flex-center" *ngIf="monitoringData.length == 0">
+      <img src="../../../../assets/media/icons/duotune/maps/map001.svg" class="mw-400px" />
+      <div class="fs-2 fw-bolder text-dark">ไม่พบข้อมูลการติดตาม</div>
+    </div>
+    <div *ngFor="let monitor of monitoringData; let disease = index" class="bg-light-gray rounded  mb-9 p-2">
+      <div class="card-body">
+        <div class="row col-12">
+          <div class="col-xl-8">
+            <h4 class="">
+              <span class="fw-bolder text-dark fs-1">{{ monitor.disease_name }}</span>
+            </h4>
+          </div>
+          <div class="col-xl-4 text-end" *ngIf="!editor[monitor.disease_id]">
+            <button class="btn btn-warning mr-2" (click)="enableEdit(monitor.disease_id, true)">แก้ไข</button>
+            <button class="btn btn-danger" (click)="confirmInfected(monitor)">ยืนยันติดเชื้อ</button>
+          </div>
+          <div class="col-xl-4 text-end" *ngIf="editor[monitor.disease_id]">
+            <button class="btn btn-primary mr-2" (click)="updateMonitoring(monitor.disease_id)">บันทึก</button>
+            <button class="btn btn-secondary" (click)="enableEdit(monitor.disease_id, false)">ยกเลิก</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row col-12">
+          <div class="col-3">
+            <label class="col-lg-6 fw-bold text-muted text_title">วันเริ่มต้น</label>
+            <div class="col-lg-8">
+              <span class="fw-bold fs-6">{{ monitor.monitor_phase[0]['started_ts'] * 1000 | thaidate:
+                'shortDate'}}</span>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <label class="col-lg-6 fw-bold text-muted text_title">วันสิ้นสุด</label>
+            <div class="col-lg-8">
+              <span class="fw-bold fs-6">{{ monitor.monitor_phase[monitor.monitor_phase.length - 1]['ended_ts'] *
+                1000 |
+                thaidate: 'shortDate' }}</span>
+            </div>
+          </div>
+          <div class="col-3">
+            <label class="col-lg-6 fw-bold text-muted text_title">ประเภทกลุ่มเสี่ยง</label>
+            <div class="">
+              <span class="fw-bold fs-6">{{ monitor.person_type_name}}</span>
+            </div>
+          </div>
+          <div class="col-3">
+            <label class="col-lg-6 fw-bold text-muted text_title">ประเภทผู้สัมผัส</label>
+            <div class="">
+              <span *ngIf="!editor[monitor.disease_id]" class="fw-bold fs-6">{{ monitor.contact_name }}</span>
+              <mat-form-field *ngIf="editor[monitor.disease_id]" appearance="outline">
+                <mat-select [(ngModel)]="monitor.contact_status_type">
+                  <mat-option *ngFor="let status of contactStatus | async" [value]="status.contact_status">
+                    {{ status['contact_name'] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="text-muted fw-bolder">
+          <p>รูปแบบการติดตาม</p>
+        </div>
+        <div class="row col-12">
+          <ng-container *ngFor="let phase of monitor.monitor_phase; let ph = index">
+            <div [class]="monitor.monitor_phase.length<=2?'col-md-6':'col-md-4'">
+              <div class="bg-light-primary rounded border-primary border border-dashed mb-3 p-2">
+                <div class="ml-2 mt-2">
+                  <span class="fs-4 fw-bolder text-dark text_title">ระยะที่ {{ phase.phase }}</span>
+                </div>
+                <div class="p-3 border-0">
+                  <div class="row col-12 mb-2">
+                    <ng-container *ngIf="!editor[monitor.disease_id] || (editor[monitor.disease_id] &&  ph == 0)">
+                      <div class="col-xl-8 text-muted fw-bolder text_title">วันเริ่มต้น</div>
+                      <div class="col-xl-4 fw-bolder text-dark text_title"
+                        [ngClass]="editor[monitor.disease_id] && monitor['monitor_phase'].length > 1 ? 'mb-16': ''">{{
+                        phase.started_ts * 1000 | thaidate:
+                        'shortDate' }}
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="editor[monitor.disease_id] &&  ph != 0">
+                      <div class="col-xl-5 text-muted fw-bolder text_title">วันเริ่มต้น</div>
+                      <mat-form-field class="col-xl-7 fw-bolder text-dark text_title" appearance="outline"
+                        *ngIf="editor[monitor.disease_id]">
+                        <input matInput #ref [matDatepicker]="pickerStart" (click)=" pickerStart.open()" readonly
+                          [min]="calMin(monitor['monitor_phase'][ph - 1]['ended_ts'])"
+                          [max]="calMax(monitor['monitor_phase'][ph]['ended_ts'])"
+                          (dateChange)="calDatePhase(disease, ph, 'start')" [(ngModel)]="phase.started_date">
+                        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerStart></mat-datepicker>
+                      </mat-form-field>
+                    </ng-container>
+                  </div>
+                  <div class="row col-12 mb-2">
+                    <ng-container *ngIf="!editor[monitor.disease_id]">
+                      <div class="col-xl-8 text-muted fw-bolder text_title">วันสิ้นสุด</div>
+                      <div class="col-xl-4 fw-bolder text-dark text_title">{{ phase.ended_ts * 1000 | thaidate:
+                        'shortDate' }}
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="editor[monitor.disease_id]">
+                      <div class="col-xl-5 text-muted fw-bolder text_title">วันสิ้นสุด</div>
+                      <mat-form-field class="col-xl-7 fw-bolder text-dark text_title" appearance="outline"
+                        *ngIf="editor[monitor.disease_id]">
+                        <input matInput [matDatepicker]="pickerEnd" (click)=" pickerEnd.open()" readonly
+                          [(ngModel)]="phase.ended_date" [min]="calMin(phase.started_ts)"
+                          (dateChange)="calDatePhase(disease, ph, 'end')">
+                        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerEnd></mat-datepicker>
+                      </mat-form-field>
+                    </ng-container>
+
+                  </div>
+                  <div class="row col-12 mb-2">
+                    <div class="col-xl-8 text-muted fw-bolder text_title">ติดตามเส้นทางการเดินทาง</div>
+                    <div class="col-xl-4 fw-bolder text-dark"><span
+                        [inlineSVG]="phase.tracking_status?icon_path_true: icon_path_false"
+                        class="svg-icon svg-icon-2x me-4"
+                        [class]="phase.tracking_status?'svg-icon-success': 'svg-icon-danger'"></span>
+                    </div>
+                  </div>
+                  <div class="row col-12 mb-2">
+                    <div class="col-xl-8 text-muted fw-bolder text_title">ติดตามการกักตัว</div>
+                    <div class="col-xl-4 fw-bolder text-dark"><span
+                        [inlineSVG]="phase?.quarantine_status?icon_path_true: icon_path_false"
+                        class="svg-icon svg-icon-2x me-4"
+                        [class]="phase?.quarantine_status?'svg-icon-success': 'svg-icon-danger'"></span>
+                    </div>
+                  </div>
+                  <div class="row col-12 mb-2">
+                    <div class="col-xl-8 text-muted fw-bolder text_title">ตำแหน่งกักตัว</div>
+                    <div class="col-xl-4 fw-bolder text-dark">
+                      <span *ngIf="phase.quarantine_points.length != 0; else emtry">
+                        <ng-container *ngFor="let loc of phase.quarantine_points; last as isLast">
+                          {{ loc.location_name }}<ng-container *ngIf="!isLast">,
+                          </ng-container>
+                        </ng-container>
+                      </span>
+                      <ng-template #emtry>
+                        <span>-</span>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> -->

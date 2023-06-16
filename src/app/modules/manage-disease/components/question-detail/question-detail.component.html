@@ -1,0 +1,39 @@
+<div class="table-responsive">
+    <!-- begin::Table -->
+    <table class="table table-row-bordered table-row-gray-100 align-middle"
+        *ngIf="disease_detail?.data?.questions.length>0">
+        <!-- begin::Table head -->
+        <thead>
+            <tr class="fw-bolder text-muted">
+                <th class="min-w-150px">คำถาม</th>
+                <th class="min-w-140px">ประเภทคำตอบ</th>
+                <th class="min-w-120px">ต้องการคำตอบ</th>
+            </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+            <tr *ngFor="let item of questions; let i = index">
+                <td>{{item?.question_name_th}}
+                    <span class="text-muted fw-bold text-muted d-block fs-7">{{item?.question_name_en}}</span>
+                </td>
+                <td>
+                    {{item?.answer_type=='number'?'ตัวเลข':'ข้อความ'}}
+                    <span class="text-muted fw-bold text-muted d-block fs-7" *ngIf="item?.answer_type=='number'">ช่วง
+                        {{item?.answer_condition?.min}}
+                        - {{item?.answer_condition?.max}}</span>
+                    <span class="text-muted fw-bold text-muted d-block fs-7" *ngIf="item?.answer_type=='text'">ไม่เกิน
+                        {{item?.answer_condition?.max}}
+                        ตัวอักษร</span>
+                </td>
+                <td>
+                    {{item?.answer_require==1?'จำเป็นต้องตอบ':'ไม่จำเป็นต้องตอบ'}}
+                    <!-- <span class="text-muted fw-bold text-muted d-block fs-7">Code: Paid</span> -->
+                </td>
+            </tr>
+        </tbody>
+        <!-- end::Table body -->
+    </table>
+    <!-- end::Table -->
+</div>
+<p *ngIf="disease_detail?.data?.questions.length==0" class="text-center fs-4">ยังไม่มีข้อมูล</p>

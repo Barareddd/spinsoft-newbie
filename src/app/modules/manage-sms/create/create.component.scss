@@ -1,0 +1,79 @@
+.ng-autocomplete {
+    width: 100%;
+    background-color: var(--kt-input-solid-bg) !important;
+    border-color: var(--kt-input-solid-bg) !important;
+    color: var(--kt-input-solid-color) !important;
+    transition: color 0.2s ease !important;
+}
+
+.hint {
+    color: gray;
+}
+
+.btn_addon {
+    padding-left: 7px !important;
+    padding-right: 3px !important;
+    height: 100% !important;
+}
+
+::ng-deep .mat-form-field {
+    display: inline !important;
+}
+
+.template_preview {
+    background-color: snow;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.hint_txt_preview {
+    margin-top: 30%;
+}
+
+.preview_title {
+    margin-bottom: 10px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    /* display: inline-grid; */
+    /* display: grid; */
+    margin: 15px 0;
+}
+
+mat-radio-button {
+    padding-bottom: 5px;
+}
+
+// map
+
+::ng-deep .modal-header {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+::ng-deep .modal-footer {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+#map {
+    height: 25vw;
+}
+
+.search_input {
+    height: 43.59px !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

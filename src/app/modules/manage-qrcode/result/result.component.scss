@@ -1,0 +1,35 @@
+#content-qr {
+    background-color: white;
+    // size: 7in 9.25in;
+    // margin: 27mm 16mm 27mm 16mm;
+    box-shadow: 1px 1px 2px #000000;
+}
+
+::ng-deep canvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 350px;
+    max-height: 350px;
+}
+
+.text_title {
+    font-size: 0.8vw;
+    font-weight: bold;
+}
+
+.text_value {
+    font-size: 0.9vw;
+}
+
+.text_ref {
+    font-size: 0.8vw;
+    padding-left: 10px;
+}
+
+::ng-deep td {
+    vertical-align: top !important;
+}
+
+tr {
+    margin-bottom: 2vw;
+}

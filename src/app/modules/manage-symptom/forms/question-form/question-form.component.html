@@ -1,0 +1,111 @@
+<div [formGroup]="form">
+    <!-- <p class="fw-bold fs-2">รายละเอียดอาการ</p> -->
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label required">คำถาม (ไทย)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="question_name_th">
+                <mat-error
+                    *ngIf="form.get('question_name_th')?.hasError('required') && form.get('question_name_th')?.touched">
+                    กรุณาระบุคำถาม (ไทย)</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-12">
+            <label class="form-label">คำถาม (อังกฤษ)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="question_name_en">
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">คำอธิบายคำถาม (ไทย)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="description_th">
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-12">
+            <label class="form-label">คำอธิบายคำถาม (อังกฤษ)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="description_en">
+            </mat-form-field>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="fv-row"
+            [ngClass]="{'col-md-6': form.get('answer_type')?.value === 'text', 'col-md-4' : form.get('answer_type')?.value === 'number' }">
+            <label class="form-label required">ประเภทคำตอบ</label>
+            <mat-form-field appearance="outline">
+                <mat-select formControlName="answer_type" placeholder="เลือกประเภทคำตอบ"
+                    (ngModelChange)="onAnswerTypeChange()">
+                    <mat-option *ngFor="let item of answer_type" [value]="item.title">
+                        {{item.value}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('answer_type')?.hasError('required') && form.get('answer_type')?.touched">
+                    กรุณาระบุประเภทคำตอบ</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-3"
+            *ngIf="form.get('answer_type')?.value!='' && form.get('answer_type')?.value=='number'">
+            <label class="form-label required" *ngIf="form.get('answer_type')?.value=='number'">ค่าต่ำสุด</label>
+            <mat-form-field appearance="outline">
+                <input type="number" matInput formControlName="answer_condition_min">
+                <!-- <mat-hint>ข้อความ เช่น 0-50, ตัวเลข เช่น 30-50</mat-hint> -->
+                <mat-error
+                    *ngIf="form.get('answer_condition_min')?.hasError('required') && form.get('answer_condition_min')?.touched">
+                    กรุณาระบุค่าต่ำสุด</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="fv-row"
+            [ngClass]="{'col-md-6': form.get('answer_type')?.value === 'text', 'col-md-3' : form.get('answer_type')?.value === 'number' }"
+            *ngIf="form.get('answer_type')?.value!=''">
+            <label class="form-label required" *ngIf="form.get('answer_type')?.value=='text'">จำนวนตัวอักษร</label>
+            <label class="form-label required" *ngIf="form.get('answer_type')?.value=='number'">ค่าสูงสุด</label>
+            <mat-form-field appearance="outline">
+                <input type="number" matInput formControlName="answer_condition_max">
+                <!-- <mat-hint>ข้อความ เช่น 0-50, ตัวเลข เช่น 30-50</mat-hint> -->
+                <mat-error
+                    *ngIf="form.get('answer_condition_max')?.hasError('required') && form.get('answer_condition_max')?.touched && form.get('answer_type')?.value=='text'">
+                    กรุณาระบุจำนวนตัวอักษร</mat-error>
+                <mat-error
+                    *ngIf="form.get('answer_condition_max')?.hasError('required') && form.get('answer_condition_max')?.touched && form.get('answer_type')?.value=='number'">
+                    กรุณาระบุค่าสูงสุด</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-2" *ngIf="form.get('answer_type')?.value=='number'">
+            <label class="form-label">หน่วย</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="answer_unit">
+                <mat-hint>เช่น %, °C</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">จำเป็นต้องตอบ</label>
+            <div class="form-check form-check-solid form-switch">
+                <input class="form-check-input w-45px h-30px" type="checkbox" formControlName="answer_require"
+                    id="statusSwitch" (change)="onAnswerRequireChange($event)" />
+                <label class="form-check-label" htmlFor="statusSwitch"
+                    *ngIf="form.get('answer_require')?.value">จำเป็น</label>
+                <label class="form-check-label" htmlFor="statusSwitch"
+                    *ngIf="!form.get('answer_require')?.value">ไม่จำเป็น</label>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="fv-row col-md-12">
+            <label class="form-label">สถานะการใช้งาน</label>
+            <div class="form-check form-check-solid form-switch">
+                <input class="form-check-input w-45px h-30px" type="checkbox" formControlName="active" id="statusSwitch"
+                    (change)="onStatusChange($event)" />
+                <label class="form-check-label" htmlFor="statusSwitch"
+                    *ngIf="form.get('active')?.value">เปิดใช้งาน</label>
+                <label class="form-check-label" htmlFor="statusSwitch"
+                    *ngIf="!form.get('active')?.value">ปิดใช้งาน</label>
+            </div>
+        </div>
+    </div>
+</div>

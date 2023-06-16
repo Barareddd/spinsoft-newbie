@@ -1,0 +1,139 @@
+<div class="d-flex flex-stack mb-7">
+  <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">รูปแบบการติดตาม</h1>
+    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+      <li class="breadcrumb-item text-muted">
+        <a [routerLink]="['/app/manage-person/search']"
+          class="text-muted text-hover-primary cursor-pointer">ค้าหากลุ่มเสี่ยง</a>
+      </li>
+      <li class="breadcrumb-item">
+        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+      </li>
+      <li class="breadcrumb-item text-muted">
+        <a [routerLink]="['/app/manage-person/view']"
+          class="text-muted text-hover-primary cursor-pointer">ข้อมูลกลุ่มเสี่ยง</a>
+      </li>
+      <li class="breadcrumb-item">
+        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+      </li>
+      <li class="breadcrumb-item text-muted">รูปแบบการติดตาม</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card mb-5 mb-xl-10">
+  <!-- <ng-container *ngFor="let monitor of monitoringData"> -->
+  <div class="card-header align-items-center border-0 mt-4">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="fw-bolder text-dark">{{ monitoringData.disease_name }} การติดตามครั้งที่ {{
+        monitoringData.monitor_lap
+        }}</span>
+      <!-- <span class="badge py-3 px-4 fs-7" [ngClass]="monitor.done ? 'badge-light-dark' : 'badge-light-primary' ">{{
+          monitor.done ? 'สิ้นสุดการติดตาม' : 'กำลังติดตาม' }}</span> -->
+    </h3>
+  </div>
+
+  <div class="card-body">
+    <div class="row col-xl-12">
+      <div class="col-lg-4 mb-7">
+        <label class="col-lg-4 fw-bold text-muted">ประเภทกลุ่มเสี่ยง</label>
+        <div class="col-lg-8">
+          <span class="fw-bold fs-6">{{ monitoringData.person_type_name }}</span>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-7">
+        <label class="col-lg-4 fw-bold text-muted">วันแรกสัมผัส</label>
+        <div class="col-lg-8">
+          <span class="fw-bold fs-6"> {{monitoringData.patient_contact_ts * 1000 | thaidate: 'shortDate'}}
+          </span>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-7">
+        <label class="col-lg-4 fw-bold text-muted">หน่วยงานที่นำเข้า</label>
+        <div class="col-lg-8">
+          <span class="fw-bold fs-6">{{ monitoringData.imported_org_name }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="card">
+  <div class="card-header align-items-center border-0 mt-4">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="fw-bolder text-dark">รูปแบบการติดตาม</span>
+    </h3>
+    <div class="col-lg-6 d-flex justify-content-end">
+      <button class="btn btn-primary" (click)="goEditMonitoring()">แก้ไข</button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="col-lg-4 mb-7">
+      <label class="col-lg-4 fw-bold text-muted">ประเภทผู้สัมผัส</label>
+      <div class="col-lg-8">
+        <span class="fw-bold fs-6"> {{ monitoringData.contact_name }}</span>
+      </div>
+    </div>
+
+    <div class="notice bg-light-dark rounded border-dark border border-dashed mb-9 p-6"
+      *ngFor="let phase of monitoringData.monitor_phase; let ph = index">
+
+      <div class="flex-stack flex-grow-1">
+        <div class="fw-semibold">
+          <h4 class="align-items-center fw-bold mb-7">Phase {{ phase.phase }}
+          </h4>
+          <div class="row">
+            <div class="col-lg-6 mb-7">
+              <label class="col-lg-4 fw-bold text-muted">วันเริ่มต้น</label>
+              <div class="col-lg-8">
+                <span class="fw-bold fs-6"> {{phase.started_ts * 1000 | thaidate: 'shortDate'}}</span>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-7">
+              <label class="col-lg-4 fw-bold text-muted">วันสิ้นสุด</label>
+              <div class="col-lg-8">
+                <span class="fw-bold fs-6"> {{phase.ended_ts * 1000 | thaidate: 'shortDate'}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 mb-7">
+              <label class="fw-bold text-muted">ติดตามเส้นทางการเดินทาง (Tracking)</label>
+              <div class="col-lg-8">
+                <span class="p-2 fw-bold fs-6"> {{ phase.tracking_status ? 'เปิด' : 'ปิด'}}</span>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-7">
+              <label class="fw-bold text-muted">ติดตามการกักตัว (Current location)</label>
+              <div class="col-lg-8">
+                <span class="p-2 fw-bold fs-6"> {{ phase.quarantine_status ? 'เปิด' : 'ปิด'}}</span>
+              </div>
+              <div class="mt-4" *ngIf="phase.quarantine_status && (locationSub | async)">
+                <div class="col-lg-5">
+                  <label class="fw-bold text-muted">ตำแหน่งกักตัว</label>
+                  <div class="col-lg-8">
+                    <span class="p-2 fw-bold fs-6"
+                      *ngFor="let point of phase['quarantine_points']; let pindex = index">{{ point['location_name']
+                      }}{{ pindex != phase['quarantine_points'].length - 1 ? ', ': '' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

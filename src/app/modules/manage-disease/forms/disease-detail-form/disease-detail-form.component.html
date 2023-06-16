@@ -1,0 +1,33 @@
+<div [formGroup]="form">
+    <p class="fw-bold fs-2">รายละเอียดโรค</p>
+    <div class="row">
+        <div class="fv-row col-md-4 col-sm-12">
+            <label class="form-label required">ชื่อโรค (ไทย)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="name_th">
+                <mat-error *ngIf="form.get('name_th')?.hasError('required') && form.get('name_th')?.touched">
+                    กรุณาระบุชื่อโรค (ไทย)</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-4">
+            <label class="form-label">ชื่อโรค (อังกฤษ)</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="name_en">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="fv-row col-md-4">
+            <label class="form-label">รหัสโรค ICD-10</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="code_icd10">
+            </mat-form-field>
+        </div>
+        <div class="fv-row col-md-4">
+            <label class="form-label">รหัสโรค R506</label>
+            <mat-form-field appearance="outline">
+                <input matInput formControlName="code_r506">
+            </mat-form-field>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="card mb-5 mb-xl-8">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fs-3 mb-1">รายการโรคที่ติดตาม</span>
+            <!-- <span class="text-muted mt-1 fw-bold fs-7">ทั้งหมด {{pagination?.total}} รายการ</span> -->
+        </h3>
+        <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover"
+            title="Click to add a user">
+            <button (click)="createDisease()" type="button" class="btn btn-sm btn-primary">
+                <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3"></span>
+                สร้างโรค
+            </button>
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+        <div class="card-toolbar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('disease_tab')" (click)="setTab('disease_tab')">
+                        ใช้งานอยู่ ({{paginationActive?.total || '0'}})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4 me-1"
+                        data-bs-toggle="tab" [ngClass]="activeClass('question_tab')" (click)="setTab('question_tab')">
+                        ไม่ได้ใช้งาน ({{paginationInactive?.total || '0'}})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-color-muted btn-active btn-active-light-primary fw-bolder px-4"
+                        data-bs-toggle="tab" [ngClass]="activeClass('tracking_tab')" (click)="setTab('tracking_tab')">
+                        แบบร่าง ({{paginationDraft?.total || '0'}})
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="tab-content">
+            <div class="tab-pane fade" [ngClass]="activeClass('disease_tab')" id="disease_tab">
+                <app-disease-table [disease_lists]="disease_active_lists"></app-disease-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationActive.total" [recordsPerPage]="paginationActive.limit"
+                        (onPageChange)="displayActivePageActive($event)">
+                    </app-pagination>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="activeClass('question_tab')" id="question_tab">
+                <app-disease-table [disease_lists]="disease_inactive_lists"></app-disease-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationInactive.total"
+                        [recordsPerPage]="paginationInactive.limit" (onPageChange)="displayActivePageInactive($event)">
+                    </app-pagination>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="activeClass('tracking_tab')" id="tracking_tab">
+                <app-disease-table [disease_lists]="disease_draft_lists"></app-disease-table>
+                <div class="card-footer py-3">
+                    <app-pagination [totalRecords]="paginationDraft.total" [recordsPerPage]="paginationDraft.limit"
+                        (onPageChange)="displayActivePageDraft($event)">
+                    </app-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- begin::Body -->
+
+</div>

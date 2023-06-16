@@ -1,0 +1,21 @@
+<div class="d-flex flex-stack flex-wrap pt-10">
+    <div class="fs-6 fw-bold text-gray-700" *ngIf="totalRecords>0">แสดง {{showOnRecords()}} จาก {{totalRecords}} รายการ
+    </div>
+    <div class="fs-6 fw-bold text-gray-700" *ngIf="totalRecords==0">ไม่พบข้อมูล</div>
+    <ul class="pagination" *ngIf="totalRecords>0">
+        <li class="page-item previous" (click)="onClickPage(activePage - 1)" *ngIf="activePage!='1'">
+            <a class="page-link cursor-pointer">
+                <i class="previous"></i>
+            </a>
+        </li>
+        <li class="page-item" [ngClass]="{'active': activePage === item}" *ngFor="let item of pages"
+            (click)="onClickPage(item)">
+            <a class="page-link cursor-pointer">{{item}}</a>
+        </li>
+        <li class="page-item next" (click)="onClickPage(activePage + 1)" *ngIf="activePage!=pages[pages.length-1]">
+            <a class="page-link cursor-pointer">
+                <i class="next"></i>
+            </a>
+        </li>
+    </ul>
+</div>
