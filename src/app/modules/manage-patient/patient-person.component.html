@@ -1,0 +1,12 @@
+<div class="row g-3 justify-items-center">
+    <div class="col-3">
+        <input type="text" placeholder="ชื่อ" class="form-control" id="name" [(ngModel)]="userData.name">
+    </div>
+    <div class="col-3">
+        <input type="text" placeholder="นามสกุล" class="form-control" id="surname" [(ngModel)]="userData.surname">
+    </div>
+    <div class="col-2">
+        <input type="text" placeholder="เบอร์โทร" class="form-control" id="number" [(ngModel)]="userData.number">
+    </div>
+    <button (click)="saveToLocalStorage()">Save to Local Storage</button>
+</div>

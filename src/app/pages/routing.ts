@@ -22,6 +22,15 @@ const Routing: Routes = [
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'patient',
+    loadChildren: () =>
+      import('../modules/manage-patient/manage-patient.module').then((m) => m.ManagePatientModule),
+  },
+  // {
+  //   path: 'patient',
+  //   component: PatientPersonComponent
+  // },
+  {
     path: 'builder',
     loadChildren: () =>
       import('./builder/builder.module').then((m) => m.BuilderModule),

@@ -31,10 +31,10 @@ export class UserInnerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // this.user$ = this.auth.currentUserSubject.asObservable();
+    new Observable();
     this.setLanguage(this.translationService.getSelectedLanguage());
     this._user = this.auth.identityClaims || UsersTable.users[0]
-  }
+}
 
   logout() {
     this.auth.logout();

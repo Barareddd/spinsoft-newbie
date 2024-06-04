@@ -20,11 +20,6 @@ export class AuthGuardWithForcedLogin implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,
     ): Observable<boolean> {
-        // return this.authService.isDoneLoading$.pipe(
-        //     filter(isDone => isDone),
-        //     switchMap(_ => this.authService.isAuthenticated$),
-        //     tap(isAuthenticated => isAuthenticated || this.router.navigate(['/auth/login'])),
-        // );
         return of(true)
     }
 }
