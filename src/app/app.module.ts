@@ -1,41 +1,37 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { ClipboardModule } from 'ngx-clipboard';
-import { TranslateModule } from '@ngx-translate/core';
-import { InlineSVGModule } from 'ng-inline-svg-2';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-// import { AuthService } from './modules/auth/services/auth.service';
-// import { OAuthModule } from 'angular-oauth2-oidc';
-import { AppConfigService } from './services/app-config.service';
-import { CoreModule } from '../app/modules/auth/services/core.module';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { JwtInterceptor } from './_helper/jwt.interceptor';
-import { IMaskModule } from 'angular-imask';
-// #fake-start#
-import { FakeAPIService } from './_fake/fake-api.service';
-// #fake-end#
+import { NgModule, APP_INITIALIZER } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ClipboardModule } from "ngx-clipboard";
+import { TranslateModule } from "@ngx-translate/core";
+import { InlineSVGModule } from "ng-inline-svg-2";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { OAuthModule } from "angular-oauth2-oidc";
+import { AppConfigService } from "./services/app-config.service";
+import { CoreModule } from "../app/modules/auth/services/core.module";
+import { AutocompleteLibModule } from "angular-ng-autocomplete";
+import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
+import { JwtInterceptor } from "./_helper/jwt.interceptor";
+import { IMaskModule } from "angular-imask";
+import { FakeAPIService } from "./_fake/fake-api.service"; // Assuming this is for fake API
 
-// function appInitializer(authService: AuthService) {
-//   return () => {
-//     return new Promise((resolve) => {
-//       //@ts-ignore
-//       authService.getUserByToken().subscribe().add(resolve);
-//     });
-//   };
-// }
+import { AuthService } from "./modules/auth"; // Import AuthService
+import { AuthGuardWithForcedLogin } from "./modules/auth/services/auth-guard-with-forced-login.service"; // Import AuthGuard
 
 const appInitializerFn = (appConfig: AppConfigService) => {
   return () => {
     return appConfig.loadAppConfig();
-  }
+  };
 };
+
+export function authAppInitializerFactory(
+  authService: AuthService
+): () => Promise<void> {
+  return () => authService.runInitialLoginSequence();
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,7 +39,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule.forRoot(),
-    // OAuthModule.forRoot(),
+    OAuthModule.forRoot(),
     TranslateModule.forRoot(),
     HttpClientModule,
     ClipboardModule,
@@ -51,32 +47,28 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     FormsModule,
     ReactiveFormsModule,
     IMaskModule,
-    // #fake-start#
-    // HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
-    //   passThruUnknownUrl: true,
-    //   dataEncapsulation: false,
-    // }),
-    // #fake-end#
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
   ],
   providers: [
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: appInitializer,
-    //   multi: true,
-    //   deps: [AuthService],
-    // },
     AppConfigService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
       multi: true,
-      deps: [AppConfigService]
+      deps: [AppConfigService],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: authAppInitializerFactory,
+      multi: true,
+      deps: [AuthService],
     },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    AuthService, // Register AuthService
+    AuthGuardWithForcedLogin, // Register AuthGuardWithForcedLogin
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
