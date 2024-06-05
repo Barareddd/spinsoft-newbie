@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { UserModel } from '../../models/user.model';
-import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppConfigService } from '../../../../services/app-config.service'
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Subscription, Observable } from "rxjs";
+import { first } from "rxjs/operators";
+import { UserModel } from "../../models/user.model";
+import { AuthService } from "../../services/auth.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AppConfigService } from "../../../../services/app-config.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   isAuthenticated$: Observable<boolean>;
@@ -29,20 +29,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {
     this.isAuthenticated$ = this.authService.isAuthenticated$;
     this.isDoneLoading$ = this.authService.isDoneLoading$;
-    this.canActivateProtectedRoutes$ = this.authService.canActivateProtectedRoutes$;
+    this.canActivateProtectedRoutes$ =
+      this.authService.canActivateProtectedRoutes$;
     // redirect to home if already logged in
     if (this.isAuthenticated$) {
-      this.router.navigate(['/']);
+      this.router.navigate(["/"]);
     }
   }
 
   ngOnInit(): void {
-    const app_name = this.environment.config.app_name
-    console.log('app_name', app_name)
+    const app_name = this.environment.config.app_name;
+    console.log("app_name", app_name);
+    this.authService.login();
   }
 
   login() {
-    this.authService.login()
+    // this.authService.login()
   }
 
   ngOnDestroy() {
