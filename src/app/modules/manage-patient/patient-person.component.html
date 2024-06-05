@@ -6,6 +6,12 @@
       class="form-control"
       formControlName="name"
     />
+    <div
+      *ngIf="myForm.get('name')?.invalid && myForm.get('name')?.touched"
+      class="text-danger"
+    >
+      Name is required
+    </div>
   </div>
   <div class="col-3">
     <input
@@ -14,6 +20,12 @@
       class="form-control"
       formControlName="surname"
     />
+    <div
+      *ngIf="myForm.get('surname')?.invalid && myForm.get('surname')?.touched"
+      class="text-danger"
+    >
+      Surname is required
+    </div>
   </div>
   <div class="col-2">
     <input
@@ -22,6 +34,12 @@
       class="form-control"
       formControlName="number"
     />
+    <div
+      *ngIf="myForm.get('number')?.invalid && myForm.get('number')?.touched"
+      class="text-danger"
+    >
+      Number is required
+    </div>
   </div>
   <button
     type="button"
@@ -32,10 +50,19 @@
   </button>
 </form>
 
-<div *ngFor="let patient of myForm.get('patients')?.value" class="row g-3 mt-5">
-  <div class="col-3 mt-5">{{ patient.name }}</div>
-  <div class="col-3 mt-5">{{ patient.surname }}</div>
-  <div class="col-2 mt-5">{{ patient.number }}</div>
+<div class="row g-3 mt-3">
+  <div class="col-3 fs-3"><strong>Name</strong></div>
+  <div class="col-3 fs-3"><strong>Surname</strong></div>
+  <div class="col-3 fs-3"><strong>Number</strong></div>
+</div>
+
+<div
+  *ngFor="let patient of myForm.get('patients')?.value; let i = index"
+  class="row g-3 mt-3"
+>
+  <div class="col-3">{{ patient.name }}</div>
+  <div class="col-3">{{ patient.surname }}</div>
+  <div class="col-2">{{ patient.number }}</div>
   <button type="button" class="col-3 border-1 border-white rounded-2">
     Edit
   </button>

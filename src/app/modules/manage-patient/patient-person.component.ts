@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LocalStorageService } from "src/app/local-storage.service";
 
 interface Patient {
@@ -21,9 +21,9 @@ export class PatientPersonComponent implements OnInit {
     private localStorageService: LocalStorageService
   ) {
     this.myForm = this.fb.group({
-      name: "",
-      surname: "",
-      number: "",
+      name: ["", Validators.required],
+      surname: ["", Validators.required],
+      number: ["", Validators.required],
       patients: [[] as Patient[]],
     });
 
@@ -31,12 +31,13 @@ export class PatientPersonComponent implements OnInit {
   }
 
   saveToLocalStorage() {
-    const formData = this.myForm.value;
-
-    if (!formData.name || !formData.surname || !formData.number) {
+    if (this.myForm.invalid) {
+      this.markAllAsTouched();
       alert("Please enter all required fields.");
       return;
     }
+
+    const formData = this.myForm.value;
 
     const patientData: Patient = {
       name: formData.name,
@@ -61,6 +62,10 @@ export class PatientPersonComponent implements OnInit {
     });
 
     this.retrieveFromLocalStorage();
+  }
+
+  markAllAsTouched() {
+    this.myForm.markAllAsTouched();
   }
 
   retrieveFromLocalStorage() {
