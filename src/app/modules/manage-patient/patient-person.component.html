@@ -23,5 +23,20 @@
       formControlName="number"
     />
   </div>
-  <button (click)="saveToLocalStorage()">Save to Local Storage</button>
+  <button
+    type="button"
+    (click)="saveToLocalStorage()"
+    class="col-3 border-1 border-white rounded-2"
+  >
+    Save to Local Storage
+  </button>
 </form>
+
+<div *ngFor="let patient of myForm.get('patients')?.value" class="row g-3 mt-5">
+  <div class="col-3 mt-5">{{ patient.name }}</div>
+  <div class="col-3 mt-5">{{ patient.surname }}</div>
+  <div class="col-2 mt-5">{{ patient.number }}</div>
+  <button type="button" class="col-3 border-1 border-white rounded-2">
+    Edit
+  </button>
+</div>
