@@ -40,11 +40,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const app_name = this.environment.config.app_name;
     console.log("app_name", app_name);
-    this.authService.login();
+    this.login(); // เรียกใช้งานฟังก์ชัน login() เมื่อ Component ถูกโหลด
   }
 
   login() {
-    // this.authService.login()
+    this.authService.login();
   }
 
   ngOnDestroy() {

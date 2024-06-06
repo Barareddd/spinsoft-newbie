@@ -1,25 +1,18 @@
 import { AuthConfig } from "angular-oauth2-oidc";
 
 export const authConfig: AuthConfig = {
-  issuer: "https://accounts-cis.fm-sp.com/auth/realms/EMS",
-  // issuer: "https://iaam.ddc.moph.go.th",
-  clientId: "iDEMS", // dev
-  dummyClientSecret: "2cdbf4f1-90f5-416c-9bd5-b6b60c03e679",
-  // clientId: 'ad10a304-1973-4530-9f72-f077b5b6cde2', // prod
-  responseType: "code",
-  redirectUri: window.location.origin,
-  // silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
-  scope: "openid profile email", // Ask offline_access to support refresh token refreshes
-  // useSilentRefresh: true, // Needed for Code Flow to suggest using iframe-based refreshes
-  silentRefreshTimeout: 1000, // For faster testing
-  // timeoutFactor: 0.25, // For faster testing
-  sessionChecksEnabled: true,
-  sessionCheckIntervall: 20000,
-  sessionCheckIFrameUrl: "https://iaam.ddc.moph.go.th/oxauth/opiframe.htm",
-  // sessionCheckIFrameUrl: 'https://iaamserver.iaam.cloud/oxauth/opiframe.htm',
-  // disableAtHashCheck: true,
-  showDebugInformation: true, // Also requires enabling "Verbose" level in devtools
-  clearHashAfterLogin: false, // https://github.com/manfredsteyer/angular-oauth2-oidc/issues/457#issuecomment-431807040,
-  nonceStateSeparator: "semicolon", // Real semicolon gets mangled by IdentityServer's URI encoding
-  // strictDiscoveryDocumentValidation: false
+  issuer: "https://accounts-cis.fm-sp.com/auth/realms/EMS", // URL ของผู้ให้บริการ Identity (IDP)
+  clientId: "iDEMS", // Client ID ของแอปพลิเคชันที่ลงทะเบียนกับ IDP
+  responseType: "code", // Response Type ที่ใช้ (เช่น code สำหรับ Authorization Code Flow)
+  redirectUri: window.location.origin, // URL ที่จะเปลี่ยนเส้นทางไปหลังจากการล็อกอิน
+  scope: "openid profile email", // ขอบเขตที่ต้องการ (scope) เช่น openid, profile, email
+  silentRefreshTimeout: 5000, // เวลาสูงสุดในการรอการต่ออายุ token แบบเงียบ (silent refresh)
+  sessionChecksEnabled: true, // เปิดใช้งานการตรวจสอบ session
+  sessionCheckIntervall: 20000, // ระยะเวลาการตรวจสอบ session (เป็นมิลลิวินาที)
+  sessionCheckIFrameUrl:
+    "https://accounts-cis.fm-sp.com/auth/realms/EMS/protocol/openid-connect/login-status-iframe.html", // URL ของ iframe สำหรับการตรวจสอบ session
+  showDebugInformation: true, // แสดงข้อมูลการ debug
+  clearHashAfterLogin: false, // ไม่ลบ hash หลังจากการล็อกอิน
+  nonceStateSeparator: "semicolon", // ตัวคั่นระหว่าง nonce และ state
+  strictDiscoveryDocumentValidation: true, // เปิดการตรวจสอบ discovery document อย่างเข้มงวด
 };
