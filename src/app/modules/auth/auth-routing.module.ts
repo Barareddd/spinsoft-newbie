@@ -3,7 +3,6 @@ import { Routes, RouterModule } from "@angular/router";
 import { AuthComponent } from "./auth.component";
 import { LoginComponent } from "./components/login/login.component";
 import { LogoutComponent } from "./components/logout/logout.component";
-import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 
 const routes: Routes = [
   {
@@ -11,8 +10,9 @@ const routes: Routes = [
     component: AuthComponent,
     children: [
       {
-        path: "/",
-        component: DashboardComponent,
+        path: "",
+        redirectTo: "login",
+        pathMatch: "full",
       },
       {
         path: "login",

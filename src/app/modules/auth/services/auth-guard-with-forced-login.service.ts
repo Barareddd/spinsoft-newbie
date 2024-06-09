@@ -26,5 +26,6 @@ export class AuthGuardWithForcedLogin implements CanActivate {
           isAuthenticated || this.router.navigate(["/auth/login"])
       )
     );
+    // return of(true);
   }
 }
