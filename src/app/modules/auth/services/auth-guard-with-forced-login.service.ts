@@ -21,10 +21,12 @@ export class AuthGuardWithForcedLogin implements CanActivate {
     return this.authService.isDoneLoading$.pipe(
       filter((isDone) => isDone),
       switchMap((_) => this.authService.isAuthenticated$),
-      tap(
-        (isAuthenticated) =>
-          isAuthenticated || this.router.navigate(["/auth/login"])
-      )
+      tap((isAuthenticated) => {
+        console.log("isAuthenticated:", isAuthenticated); // เพิ่มบรรทัดนี้เพื่อ console.log ค่า isAuthenticated
+        if (!isAuthenticated) {
+          this.router.navigate(["/auth/login"]);
+        }
+      })
     );
     // return of(true);
   }

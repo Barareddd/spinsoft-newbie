@@ -69,7 +69,11 @@ export class AuthService {
     // TODO: Improve this setup. See: https://github.com/jeroenheijmans/sample-angular-oauth2-oidc-with-auth-guards/issues/2
     window.addEventListener("storage", (event) => {
       // The `key` is `null` if the event was caused by `.clear()`
-      if (event.key !== "access_token" && event.key !== null) {
+      if (
+        typeof event.key === "string" &&
+        event.key !== "access_token" &&
+        event.key !== null
+      ) {
         return;
       }
 
@@ -85,10 +89,21 @@ export class AuthService {
       }
     });
 
-    this.oauthService.events.subscribe((_) => {
-      this.isAuthenticatedSubject$.next(
-        this.oauthService.hasValidAccessToken()
-      );
+    this.oauthService.events.subscribe((event) => {
+      if (
+        event instanceof OAuthErrorEvent && // เพิ่มตรวจสอบว่า event เป็น instance ของ OAuthErrorEvent
+        typeof event.reason === "string" && // เพิ่มตรวจสอบว่า event.reason เป็นสตริงหรือไม่
+        event.reason === "token_validation_error"
+      ) {
+        console.error("OAuthErrorEvent Object:", event);
+        // กระทำเพิ่มเติมที่นี่เมื่อพบว่ามีปัญหาในการตรวจสอบ nonce
+        // เช่น ให้ทำการ refresh token หรือ logout ผู้ใช้
+      } else {
+        console.log("OAuthEvent Object:", event);
+      }
+
+      this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
+      this.currentUser$ = this.currentUserSubject.asObservable();
     });
 
     this.oauthService.events
@@ -248,7 +263,7 @@ export class AuthService {
     // Note: before version 9.1.0 of the library you needed to
     // call encodeURIComponent on the argument to the method.
     // this.oauthService.initCodeFlow(targetUrl || this.router.url);
-    this.oauthService.initCodeFlow(targetUrl || "home");
+    this.oauthService.initCodeFlow(targetUrl || "/home");
   }
 
   public logout() {

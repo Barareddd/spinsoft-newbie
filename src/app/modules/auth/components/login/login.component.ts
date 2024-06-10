@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     // redirect to home if already logged in
     if (this.isAuthenticated$) {
       this.router.navigate(["/"]);
+      console.log(this.isAuthenticated$);
+      console.log("login success");
     }
   }
 
