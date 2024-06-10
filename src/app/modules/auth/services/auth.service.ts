@@ -55,7 +55,7 @@ export class AuthService {
     this.oauthService.events.subscribe((event) => {
       if (event instanceof OAuthErrorEvent) {
         console.error("OAuthErrorEvent Object:", event);
-        this.logout();
+        // this.logout();
       } else {
         console.log("OAuthEvent Object:", event);
       }
@@ -186,6 +186,8 @@ export class AuthService {
 
         .then(() => {
           if (this.oauthService.hasValidAccessToken()) {
+            this.isAuthenticatedSubject$.next(true);
+
             return Promise.resolve();
           }
 
