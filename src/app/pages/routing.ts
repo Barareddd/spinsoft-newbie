@@ -1,117 +1,117 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
 const Routing: Routes = [
   {
-    path: 'dashboard',
+    path: "dashboard",
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
   },
   {
-    path: 'products',
+    path: "products",
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
   },
   {
-    path: 'setting',
+    path: "setting",
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
   },
   {
-    path: 'users',
+    path: "users",
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
   },
-  {
-    path: 'patient',
-    loadChildren: () =>
-      import('../modules/manage-patient/manage-patient.module').then((m) => m.ManagePatientModule),
-  },
+  // {
+  //   path: 'patient',
+  //   loadChildren: () =>
+  //     import('../modules/manage-patient/manage-patient.module').then((m) => m.ManagePatientModule),
+  // },
   // {
   //   path: 'patient',
   //   component: PatientPersonComponent
   // },
   {
-    path: 'builder',
+    path: "builder",
     loadChildren: () =>
-      import('./builder/builder.module').then((m) => m.BuilderModule),
+      import("./builder/builder.module").then((m) => m.BuilderModule),
   },
   {
-    path: 'crafted/pages/profile',
+    path: "crafted/pages/profile",
     loadChildren: () =>
-      import('../modules/profile/profile.module').then((m) => m.ProfileModule),
+      import("../modules/profile/profile.module").then((m) => m.ProfileModule),
   },
   {
-    path: 'crafted/account',
+    path: "crafted/account",
     loadChildren: () =>
-      import('../modules/account/account.module').then((m) => m.AccountModule),
+      import("../modules/account/account.module").then((m) => m.AccountModule),
   },
   {
-    path: 'crafted/pages/wizards',
+    path: "crafted/pages/wizards",
     loadChildren: () =>
-      import('../modules/wizards/wizards.module').then((m) => m.WizardsModule),
+      import("../modules/wizards/wizards.module").then((m) => m.WizardsModule),
   },
   {
-    path: 'crafted/widgets',
+    path: "crafted/widgets",
     loadChildren: () =>
-      import('../modules/widgets-examples/widgets-examples.module').then(
+      import("../modules/widgets-examples/widgets-examples.module").then(
         (m) => m.WidgetsExamplesModule
       ),
   },
   {
-    path: 'app/manage-qrcode',
+    path: "app/manage-qrcode",
     loadChildren: () =>
-      import('../modules/manage-qrcode/manage-qrcode.module').then(
+      import("../modules/manage-qrcode/manage-qrcode.module").then(
         (m) => m.ManageQrcodeModule
       ),
   },
   {
-    path: 'app/manage-sms',
+    path: "app/manage-sms",
     loadChildren: () =>
-      import('../modules/manage-sms/manage-sms.module').then(
+      import("../modules/manage-sms/manage-sms.module").then(
         (m) => m.ManageSMSModule
       ),
   },
   {
-    path: 'app/manage-disease',
+    path: "app/manage-disease",
     loadChildren: () =>
-      import('../modules/manage-disease/manage-disease.module').then(
+      import("../modules/manage-disease/manage-disease.module").then(
         (m) => m.ManageDiseaseModule
       ),
   },
   {
-    path: 'app/manage-symptom',
+    path: "app/manage-symptom",
     loadChildren: () =>
-      import('../modules/manage-symptom/manage-symptom.module').then(
+      import("../modules/manage-symptom/manage-symptom.module").then(
         (m) => m.ManageSymptomModule
       ),
   },
   {
-    path: 'app/manage-person',
+    path: "app/manage-person",
     loadChildren: () =>
-      import('../modules/manage-person/manage-person.module').then(
+      import("../modules/manage-person/manage-person.module").then(
         (m) => m.ManagePersonModule
       ),
   },
   {
-    path: 'app/application',
+    path: "app/application",
     loadChildren: () =>
-      import('../modules/download-app/download-app.module').then(
+      import("../modules/download-app/download-app.module").then(
         (m) => m.DownloadAppModule
       ),
   },
   {
-    path: 'apps/chat',
+    path: "apps/chat",
     loadChildren: () =>
-      import('../modules/apps/chat/chat.module').then((m) => m.ChatModule),
+      import("../modules/apps/chat/chat.module").then((m) => m.ChatModule),
   },
   {
-    path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full',
+    path: "",
+    redirectTo: "/dashboard",
+    pathMatch: "full",
   },
   {
-    path: '**',
-    redirectTo: 'error/404',
+    path: "**",
+    redirectTo: "error/404",
   },
 ];
 

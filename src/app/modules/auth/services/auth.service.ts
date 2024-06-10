@@ -1,5 +1,3 @@
-/* eslint-disable brace-style */
-
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { OAuthErrorEvent, OAuthService } from "angular-oauth2-oidc";
@@ -161,7 +159,7 @@ export class AuthService {
     // currently configured:
     return (
       this.oauthService
-        .loadDiscoveryDocument()
+        .loadDiscoveryDocumentAndTryLogin()
 
         // For demo purposes, we pretend the previous call was very slow
         // .then(() => new Promise<void>(resolve => setTimeout(() => resolve(), 1500)))
