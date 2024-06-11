@@ -43,6 +43,14 @@
 <p class="text-center fs-1 fw-bold project_name">Medical Devices</p>
 <div class="underline"></div>
 <p class="text-center fs-5 fw-bold">ระบบบริหารจัดการฐานข้อมูลเครื่องมือแพทย์</p>
+<div *ngIf="status == 200">
+  <h1 class="text-center">Title: {{ todo.title }}</h1>
+  <h1 class="text-center">Status: {{ status }}</h1>
+</div>
+<div *ngIf="status !== 200">
+  <h1 class="text-center">NOT FOUND 404</h1>
+  <h1 class="text-center">Status: {{ status }}</h1>
+</div>
 
 <!-- begin::Row -->
 <!-- <div class="row g-5 g-xl-8">
@@ -62,7 +70,6 @@
   </div>
 </div> -->
 <!-- end::Row -->
-
 
 <!-- <div class="row gy-5 g-xl-8">
   <div class="col-xxl-4">

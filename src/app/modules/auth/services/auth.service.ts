@@ -12,8 +12,10 @@ export type UserType = UserModel | undefined;
 export class AuthService {
   private isAuthenticatedSubject$ = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject$.asObservable();
+
   currentUser$: Observable<UserType>;
   currentUserSubject: BehaviorSubject<UserType>;
+
   private isDoneLoadingSubject$ = new BehaviorSubject<boolean>(false);
   public isDoneLoading$ = this.isDoneLoadingSubject$.asObservable();
 
@@ -30,12 +32,12 @@ export class AuthService {
     this.oauthService.events.subscribe((event) => {
       if (event instanceof OAuthErrorEvent) {
         console.error("OAuthErrorEvent Object:", event);
+        // this.login();
       } else {
         console.log("OAuthEvent Object:", event);
       }
-
-      this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
-      this.currentUser$ = this.currentUserSubject.asObservable();
+      // this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
+      // this.currentUser$ = this.currentUserSubject.asObservable();
     });
 
     window.addEventListener("storage", (event) => {
@@ -111,6 +113,7 @@ export class AuthService {
           .map((kvp) => kvp.split("="))
       );
     }
+    // localStorage.clear();
 
     return this.oauthService
       .loadDiscoveryDocumentAndTryLogin()

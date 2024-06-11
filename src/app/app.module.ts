@@ -20,6 +20,7 @@ import { FakeAPIService } from "./_fake/fake-api.service"; // Assuming this is f
 
 import { AuthService } from "./modules/auth"; // Import AuthService
 import { AuthGuardWithForcedLogin } from "./modules/auth/services/auth-guard-with-forced-login.service"; // Import AuthGuard
+import { TodoService } from "./services/todo.service";
 
 const appInitializerFn = (appConfig: AppConfigService) => {
   return () => {
@@ -53,6 +54,7 @@ export function authAppInitializerFactory(
   ],
   providers: [
     AppConfigService,
+    TodoService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
